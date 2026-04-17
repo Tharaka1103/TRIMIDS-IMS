@@ -2,9 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import connectDB from "@/lib/db";
 import User from "@/models/User";
-import AuditLog from "@/models/AuditLog";
 import { hasPermission } from "@/lib/permissions";
 import { PERMISSIONS } from "@/types/permissions";
+import { logAuditActivity } from "@/lib/audit";
 
 export async function GET(request: NextRequest) {
   try {
@@ -51,21 +51,22 @@ export async function POST(request: NextRequest) {
       password: body.password || "Password@123" // default password if not provided
     });
 
-    await AuditLog.create({
-      user: session.userId,
-      action: "create_user",
-      resource: "users",
-      resourceId: user._id.toString(),
-      details: { email: user.email, role: user.role }
-    });
+      await logAuditActivity({
+        user: session.userId,
+        action: "create_user",
+        resource: "users",
+        resourceId: user._id.toString(),
+        details: { email: user.email, role: user.role },
+        req: request,
+      });
 
-    const userWithoutPassword = await User.findById(user._id).select("-password -sessionToken").lean();
+      const userWithoutPassword = await User.findById(user._id).select("-password -sessionToken").lean();
 
-    return NextResponse.json(
-      { user: userWithoutPassword, message: "User created successfully" },
-      { status: 201 }
-    );
-  } catch (error: any) {
+      return NextResponse.json(
+        { user: userWithoutPassword, message: "User created successfully" },
+        { status: 201 }
+      );
+    } catch (error: any) {
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import connectDB from "@/lib/db";
 import User from "@/models/User";
-import AuditLog from "@/models/AuditLog";
 import { setSession, getRoleRedirect } from "@/lib/auth";
+import { logAuditActivity } from "@/lib/audit";
 
 export async function POST(request: NextRequest) {
   try {
@@ -53,14 +53,13 @@ export async function POST(request: NextRequest) {
     if (!isPasswordValid) {
       await user.incrementLoginAttempts();
 
-      await AuditLog.create({
-        user: user._id,
+      await logAuditActivity({
+        user: user._id.toString(),
         action: "login_failed",
         resource: "auth",
         details: { email },
-        ipAddress: request.headers.get("x-forwarded-for") || "unknown",
-        userAgent: request.headers.get("user-agent") || "unknown",
         status: "failure",
+        req: request,
       });
 
       return NextResponse.json(
@@ -95,13 +94,12 @@ export async function POST(request: NextRequest) {
     });
 
     // Audit log
-    await AuditLog.create({
-      user: user._id,
+    await logAuditActivity({
+      user: user._id.toString(),
       action: "login_success",
       resource: "auth",
-      ipAddress: request.headers.get("x-forwarded-for") || "unknown",
-      userAgent: request.headers.get("user-agent") || "unknown",
       status: "success",
+      req: request,
     });
 
     return response;
