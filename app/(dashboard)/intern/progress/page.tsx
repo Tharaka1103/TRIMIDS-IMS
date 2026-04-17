@@ -5,19 +5,54 @@ import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { CalendarDays, Star, Award, Target } from "lucide-react";
+import { CalendarDays, Star, Award, Target, Loader2 } from "lucide-react";
+import { toast } from "sonner";
+
+interface Evaluation {
+  _id: string;
+  week: number;
+  score: number;
+  feedback: string;
+}
 
 export default function InternProgressPage() {
   const [progress, setProgress] = useState({ 
-    completedWeeks: 4, 
-    totalWeeks: 12, 
-    overallScore: 88,
-    badges: ['Fast Learner', 'Code Ninja', 'Punctual'],
-    evaluations: [
-      { id: 1, week: 2, score: 85, feedback: "Good start, needs more familiarity with the stack." },
-      { id: 2, week: 4, score: 90, feedback: "Excellent improvement. Handling tasks well." }
-    ]
+    completedWeeks: 0, 
+    totalWeeks: 0, 
+    overallScore: 0,
+    badges: [] as string[],
+    evaluations: [] as Evaluation[]
   });
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProgress();
+  }, []);
+
+  const fetchProgress = async () => {
+    try {
+      const res = await fetch("/api/interns/progress");
+      if (res.ok) {
+        const data = await res.json();
+        setProgress(data.progress);
+      } else {
+        const error = await res.json();
+        toast.error(error.error || "Failed to load progress");
+      }
+    } catch (err) {
+      toast.error("Failed to load progress");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="flex h-[80vh] items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
@@ -33,9 +68,12 @@ export default function InternProgressPage() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">Week {progress.completedWeeks} / {progress.totalWeeks}</div>
-            <Progress value={(progress.completedWeeks / progress.totalWeeks) * 100} className="mt-4 h-2" />
+            <Progress 
+              value={progress.totalWeeks > 0 ? (progress.completedWeeks / progress.totalWeeks) * 100 : 0} 
+              className="mt-4 h-2" 
+            />
             <p className="text-xs text-muted-foreground mt-2">
-              {(progress.totalWeeks - progress.completedWeeks)} weeks remaining
+              {Math.max(0, progress.totalWeeks - progress.completedWeeks)} weeks remaining
             </p>
           </CardContent>
         </Card>
@@ -59,12 +97,16 @@ export default function InternProgressPage() {
             <Award className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2 pt-2">
-            {progress.badges.map((badge, i) => (
-              <Badge key={i} variant="secondary" className="flex items-center">
-                <Star className="h-3 w-3 mr-1 text-yellow-500" />
-                {badge}
-              </Badge>
-            ))}
+            {progress.badges.length > 0 ? (
+                progress.badges.map((badge, i) => (
+                <Badge key={i} variant="secondary" className="flex items-center">
+                    <Star className="h-3 w-3 mr-1 text-yellow-500" />
+                    {badge}
+                </Badge>
+                ))
+            ) : (
+                <span className="text-sm text-muted-foreground">No badges earned yet.</span>
+            )}
           </CardContent>
         </Card>
       </div>
@@ -75,23 +117,30 @@ export default function InternProgressPage() {
           <CardDescription>Bi-weekly performance reviews</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="space-y-8">
-            {progress.evaluations.map((evalRecord) => (
-              <div key={evalRecord.id} className="flex items-start space-x-4 border-b pb-6 last:border-0 last:pb-0">
-                <div className="bg-primary/10 p-3 rounded-full">
-                  <span className="font-bold text-primary">W{evalRecord.week}</span>
-                </div>
-                <div className="flex-1 space-y-1">
-                  <div className="flex items-center justify-between">
-                    <p className="text-sm border rounded-full px-2 py-0.5 font-medium border-slate-200">
-                      Score: <span className="text-indigo-600 font-bold">{evalRecord.score}/100</span>
-                    </p>
+          {progress.evaluations.length > 0 ? (
+            <div className="space-y-8">
+              {progress.evaluations.map((evalRecord) => (
+                <div key={evalRecord._id} className="flex items-start space-x-4 border-b pb-6 last:border-0 last:pb-0">
+                  <div className="bg-primary/10 p-3 rounded-full shrink-0">
+                    <span className="font-bold text-primary">W{evalRecord.week}</span>
                   </div>
-                  <p className="text-slate-600 italic">"{evalRecord.feedback}"</p>
+                  <div className="flex-1 space-y-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-sm border rounded-full px-2 py-0.5 font-medium border-slate-200">
+                        Score: <span className="text-indigo-600 font-bold">{evalRecord.score}/100</span>
+                      </p>
+                    </div>
+                    <p className="text-slate-600 italic">"{evalRecord.feedback}"</p>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-6">
+                <Target className="w-12 h-12 text-muted-foreground opacity-50 mx-auto mb-2" />
+                <p className="text-muted-foreground">No evaluations have been submitted yet.</p>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
