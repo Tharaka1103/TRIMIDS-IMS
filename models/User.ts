@@ -23,6 +23,7 @@ export interface IUser extends Document {
   lockUntil?: Date;
   preferences: {
     theme: "light" | "dark" | "system";
+    color: "zinc" | "slate" | "stone" | "gray" | "neutral" | "red" | "rose" | "orange" | "green" | "blue" | "yellow" | "violet";
     language: string;
     emailNotifications: boolean;
     pushNotifications: boolean;
@@ -91,6 +92,11 @@ const UserSchema = new Schema<IUser>(
         type: String,
         enum: ["light", "dark", "system"],
         default: "system",
+      },
+      color: {
+        type: String,
+        enum: ["zinc", "slate", "stone", "gray", "neutral", "red", "rose", "orange", "green", "blue", "yellow", "violet"],
+        default: "zinc",
       },
       language: { type: String, default: "en" },
       emailNotifications: { type: Boolean, default: true },

@@ -128,3 +128,22 @@
     @apply font-sans;
   }
 }
+
+/* Custom Themes Section */
+@layer base {
+  .theme-rose { --primary: oklch(0.645 0.246 16.439); }
+  .theme-blue { --primary: oklch(0.606 0.169 253.94); }
+  .theme-green { --primary: oklch(0.627 0.194 149.214); }
+  .theme-orange { --primary: oklch(0.705 0.213 47.604); }
+  .theme-violet { --primary: oklch(0.551 0.277 284.184); }
+  .theme-yellow { --primary: oklch(0.852 0.199 91.936); }
+  .theme-red { --primary: oklch(0.637 0.237 25.331); }
+
+  .dark.theme-rose { --primary: oklch(0.645 0.246 16.439); }
+  .dark.theme-blue { --primary: oklch(0.606 0.169 253.94); }
+  .dark.theme-green { --primary: oklch(0.627 0.194 149.214); }
+  .dark.theme-orange { --primary: oklch(0.705 0.213 47.604); }
+  .dark.theme-violet { --primary: oklch(0.551 0.277 284.184); }
+  .dark.theme-yellow { --primary: oklch(0.852 0.199 91.936); }
+  .dark.theme-red { --primary: oklch(0.637 0.237 25.331); }
+}

@@ -4,6 +4,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { TooltipProvider } from "@/components/ui/tooltip"
 import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeColorProvider } from "@/components/theme-color-provider"
 
 const montserrat = Montserrat({subsets:['latin'],variable:'--font-sans'});
 
@@ -40,7 +41,9 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <TooltipProvider>{children}</TooltipProvider>
+          <ThemeColorProvider>
+            <TooltipProvider>{children}</TooltipProvider>
+          </ThemeColorProvider>
         </ThemeProvider>
       </body>
     </html>
