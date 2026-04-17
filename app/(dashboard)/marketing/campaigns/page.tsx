@@ -85,7 +85,7 @@ export default function MarketingCampaignsPage() {
   };
 
   const filteredCampaigns = campaigns.filter((c: any) => 
-    c.name.toLowerCase().includes(search.toLowerCase()) || c.type.toLowerCase().includes(search.toLowerCase())
+    c.name?.toLowerCase().includes(search.toLowerCase()) || c.type?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (

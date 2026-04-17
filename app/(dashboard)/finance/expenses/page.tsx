@@ -46,10 +46,9 @@ export default function FinanceExpensesPage() {
   };
 
   const filteredExpenses = expenses.filter((e: any) => {
-    const matchesSearch = e.description.toLowerCase().includes(search.toLowerCase()) || 
-                          e.user?.name.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = e.description?.toLowerCase().includes(search.toLowerCase()) ||
+                          e.user?.name?.toLowerCase().includes(search.toLowerCase());
     const matchesStatus = statusFilter === "All" || e.status === statusFilter;
-    return matchesSearch && matchesStatus;
   });
 
   return (
