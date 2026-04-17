@@ -129,7 +129,7 @@ export function UserSettings() {
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
-        <Spinner size="lg" />
+        <Spinner className="w-10 h-10" />
       </div>
     );
   }
