@@ -1,33 +1,24 @@
-import mongoose, { Schema, Document } from "mongoose";
+import mongoose, { Schema, Document } from 'mongoose';
 
 export interface IDepartment extends Document {
   name: string;
   description?: string;
   head?: mongoose.Types.ObjectId;
-  createdAt: Date;
-  updatedAt: Date;
+  budget: number;
+  employeeCount: number;
 }
 
 const DepartmentSchema = new Schema<IDepartment>(
   {
-    name: {
-      type: String,
-      required: [true, "Please provide a department name"],
-      trim: true,
-      unique: true,
-    },
-    description: {
-      type: String,
-      trim: true,
-    },
-    head: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-    },
+    name: { type: String, required: true, unique: true, trim: true },
+    description: { type: String, trim: true },
+    head: { type: Schema.Types.ObjectId, ref: 'User' },
+    budget: { type: Number, required: true, default: 0, min: 0 },
+    employeeCount: { type: Number, required: true, default: 0, min: 0 },
   },
-  { timestamps: true }
+  {
+    timestamps: true,
+  }
 );
 
-export const Department =
-  mongoose.models.Department ||
-  mongoose.model<IDepartment>("Department", DepartmentSchema);
+export default mongoose.models.Department || mongoose.model<IDepartment>('Department', DepartmentSchema);

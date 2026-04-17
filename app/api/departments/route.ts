@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getSession } from '@/lib/auth';
 import { hasPermission } from "@/lib/permissions";
 import connectDB from '@/lib/db';
-import { Department } from "@/models/Department";
+import Department from "@/models/Department";
 
 export async function GET() {
   try {
