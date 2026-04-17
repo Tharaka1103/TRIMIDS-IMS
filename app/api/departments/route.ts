@@ -1,20 +1,22 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getSession } from '@/lib/auth';
 import { hasPermission } from "@/lib/permissions";
 import connectDB from '@/lib/db';
 import Department from "@/models/Department";
+import { logAuditActivity } from "@/lib/audit";
 
-export async function GET() {
+export async function GET(req: NextRequest) {
   try {
     const currentUser = await getSession();
-    if (!currentUser || !hasPermission(currentUser.role, "manage:system" as any)) {
+    if (!currentUser || (!hasPermission(currentUser.role, "manage:system" as any) && currentUser.role !== "hr_manager")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
     await connectDB();
     const departments = await Department.find()
       .populate("head", "name email")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
 
     return NextResponse.json(departments);
   } catch (error) {
@@ -23,7 +25,7 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const currentUser = await getSession();
     if (!currentUser || !hasPermission(currentUser.role, "manage:system" as any)) {
@@ -35,6 +37,15 @@ export async function POST(request: Request) {
 
     await connectDB();
     const department = await Department.create({ name, description });
+    
+    await logAuditActivity({
+      user: currentUser.userId,
+      action: "create_department",
+      resource: "departments",
+      resourceId: department._id.toString(),
+      details: { name },
+      req: request
+    });
 
     return NextResponse.json(department, { status: 201 });
   } catch (error: any) {

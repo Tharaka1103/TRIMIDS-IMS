@@ -27,7 +27,7 @@ type Intern = {
   _id: any;
   name: string;
   email: string;
-  status: "active" | "inactive" | "suspended";
+  isActive: boolean;
   department?: string;
   createdAt: string;
 };
@@ -52,6 +52,21 @@ export default function AdminInternsPage() {
       console.error("Failed to fetch interns", error);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleStatusChange = async (id: string, isActive: boolean) => {
+    try {
+      const res = await fetch(`/api/users/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ isActive }),
+      });
+      if (res.ok) {
+         fetchInterns();
+      }
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -123,14 +138,13 @@ export default function AdminInternsPage() {
                   <TableCell>
                     <Badge
                       variant={
-                        intern.status === "active"
+                        intern.isActive
                           ? "default"
-                          : intern.status === "suspended"
-                          ? "destructive"
-                          : "secondary"
+                          : "destructive"
                       }
+                      className={intern.isActive ? "bg-emerald-500 hover:bg-emerald-600" : ""}
                     >
-                      {intern.status}
+                      {intern.isActive ? "Active" : "Suspended"}
                     </Badge>
                   </TableCell>
                   <TableCell>
@@ -155,13 +169,13 @@ export default function AdminInternsPage() {
                         <DropdownMenuItem>View details</DropdownMenuItem>
                         <DropdownMenuItem>Edit intern</DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        {intern.status === "active" ? (
-                          <DropdownMenuItem className="text-red-600">
+                        {intern.isActive ? (
+                          <DropdownMenuItem className="text-red-600" onClick={() => handleStatusChange(intern._id, false)}>
                             <UserX className="mr-2 h-4 w-4" />
                             Suspend
                           </DropdownMenuItem>
                         ) : (
-                          <DropdownMenuItem className="text-green-600">
+                          <DropdownMenuItem className="text-green-600" onClick={() => handleStatusChange(intern._id, true)}>
                             <UserCheck className="mr-2 h-4 w-4" />
                             Activate
                           </DropdownMenuItem>

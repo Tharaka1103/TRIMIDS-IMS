@@ -31,9 +31,9 @@ export default function HREmployeesPage() {
   };
 
   const filteredEmployees = employees.filter((e: any) => {
-    const matchesSearch = e.name.toLowerCase().includes(search.toLowerCase()) || 
-                          e.email.toLowerCase().includes(search.toLowerCase());
-    const matchesRole = roleFilter === "All" || e.roles.includes(roleFilter.toLowerCase());
+    const matchesSearch = e.name?.toLowerCase().includes(search.toLowerCase()) || 
+                          e.email?.toLowerCase().includes(search.toLowerCase());
+    const matchesRole = roleFilter === "All" || e.role === roleFilter.toLowerCase() || e.role?.includes(roleFilter.toLowerCase());
     return matchesSearch && matchesRole;
   });
 
@@ -98,9 +98,7 @@ export default function HREmployeesPage() {
                     <TableCell className="text-sm">{user.email}</TableCell>
                     <TableCell>
                       <div className="flex gap-1 flex-wrap">
-                        {user.role.map((r: string) => (
-                          <Badge key={r} variant="outline" className="text-xs uppercase">{r}</Badge>
-                        ))}
+                        <Badge variant="outline" className="text-xs uppercase">{user.role}</Badge>
                       </div>
                     </TableCell>
                     <TableCell className="text-xs text-muted-foreground">{format(new Date(user.createdAt || new Date()), 'PP')}</TableCell>

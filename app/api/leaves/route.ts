@@ -1,10 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getSession } from '@/lib/auth';
 import connectDB from '@/lib/db';
 import { LeaveRequest } from "@/models/LeaveRequest";
 import { hasPermission } from "@/lib/permissions";
+import { logAuditActivity } from "@/lib/audit";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const currentUser = await getSession();
     if (!currentUser) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -13,11 +14,10 @@ export async function GET(request: Request) {
     const { searchParams } = new URL(request.url);
     const mineOnly = searchParams.get("mine") === "true";
 
-    const query = mineOnly ? { user: currentUser.userId } : {};
+    const query: any = mineOnly ? { user: currentUser.userId } : {};
 
-    // Only HR/Admins can see non-mine requests
-    if (!mineOnly && !hasPermission(currentUser.role, "manage:events" as any)) { // Using events as a proxy for hr actions if manage:users not assigned, let's assume if it's admin or hr. (HR generally has 'manage:users' in our permission schema)
-       if (!["admin", "hr", "manager"].includes(currentUser.role)) {
+    if (!mineOnly) { 
+       if (!["admin", "hr_manager", "finance_manager"].includes(currentUser.role)) {
           return NextResponse.json({ error: "Forbidden" }, { status: 403 });
        }
     }
@@ -25,7 +25,8 @@ export async function GET(request: Request) {
     const leaves = await LeaveRequest.find(query)
       .populate("user", "name email")
       .populate("approvedBy", "name")
-      .sort({ createdAt: -1 });
+      .sort({ createdAt: -1 })
+      .lean();
 
     return NextResponse.json(leaves);
   } catch (error) {
@@ -34,7 +35,7 @@ export async function GET(request: Request) {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const currentUser = await getSession();
     if (!currentUser) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -53,17 +54,26 @@ export async function POST(request: Request) {
       reason,
     });
 
+    await logAuditActivity({
+      user: currentUser.userId,
+      action: "create_leave_request",
+      resource: "leaves",
+      resourceId: leave._id.toString(),
+      details: { type, startDate, endDate, reason },
+      req: request
+    });
+
     return NextResponse.json(leave, { status: 201 });
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error creating leave request:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
-export async function PATCH(request: Request) {
+export async function PATCH(request: NextRequest) {
   try {
     const currentUser = await getSession();
-    if (!currentUser || !["admin", "hr", "manager"].includes(currentUser.role)) {
+    if (!currentUser || !["admin", "hr_manager"].includes(currentUser.role)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
@@ -79,8 +89,19 @@ export async function PATCH(request: Request) {
       { new: true }
     );
 
+    if (leave) {
+      await logAuditActivity({
+        user: currentUser.userId,
+        action: `leave_${status.toLowerCase()}`,
+        resource: "leaves",
+        resourceId: leave._id.toString(),
+        details: { status },
+        req: request
+      });
+    }
+
     return NextResponse.json(leave);
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error updating leave request:", error);
     return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
