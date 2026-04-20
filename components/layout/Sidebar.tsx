@@ -46,6 +46,7 @@ import {
   Target,
   PieChart,
   Shield,
+  Mail
 } from "lucide-react";
 import { Role } from "@/types/permissions";
 import { getRoleDisplayName } from "@/lib/permissions";
@@ -87,6 +88,11 @@ const getNavItems = (role: Role, unreadCount: number = 0): NavItem[] => {
       title: "Departments",
       href: "/admin/departments",
       icon: Building2,
+    },
+    {
+      title: "Emails",
+      href: "/admin/emails",
+      icon: Mail,
     },
     {
       title: "Reports",
@@ -282,12 +288,13 @@ export function Sidebar({
       {/* Logo Header */}
       <div className="h-16 flex items-center px-6 border-b border-border shrink-0">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg bg-primary flex items-center justify-center">
-            <Shield className="w-5 h-5 text-primary-foreground" />
-          </div>
-          {!collapsed && (
+          {collapsed ? (
+            <div className="w-8 h-8 font-bold rounded-lg bg-primary text-blue-500 flex items-center justify-center">
+              T
+            </div>
+          ) : (
             <div>
-              <span className="font-bold text-foreground text-lg">TRIMIDS</span>
+              <span className="font-bold text-blue-500 text-lg">TRI<span className="text-red-500">MIDS</span></span>
               <p className="text-xs text-muted-foreground leading-none">
                 {getRoleDisplayName(role)}
               </p>

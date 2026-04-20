@@ -2,7 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import connectDB from "@/lib/db";
 import Evaluation from "@/models/Evaluation";
+import User from "@/models/User";
 import { logAuditActivity } from "@/lib/audit";
+import { sendEvaluationEmail } from "@/lib/email";
 
 export async function GET(request: NextRequest) {
   try {
@@ -76,6 +78,29 @@ export async function POST(request: NextRequest) {
       goals,
       overallFeedback,
     });
+
+    // Send email notification to the intern
+    const internUser = await User.findById(internId).select("name email").lean();
+    const evaluatorUser = await User.findById(currentUser.userId).select("name").lean();
+    
+    if (internUser) {
+      try {
+        // Calculate average score
+        const scores = [performanceScore, technicalSkills, communication, teamwork, problemSolving, attendance].filter(s => s !== undefined);
+        const averageScore = scores.length > 0 ? (scores.reduce((a, b) => a + b, 0) / scores.length).toFixed(1) : "0";
+        
+        await sendEvaluationEmail(
+          internUser.email,
+          internUser.name,
+          evaluatorUser?.name || "System",
+          averageScore,
+          overallFeedback || "No feedback provided",
+          new Date().toLocaleDateString()
+        );
+      } catch (emailError) {
+        console.error(`Failed to send evaluation email to ${internUser.email}:`, emailError);
+      }
+    }
 
     await logAuditActivity({
       user: currentUser.userId,

@@ -5,6 +5,7 @@ import Achievement from "@/models/Achievement";
 import UserAchievement from "@/models/UserAchievement";
 import User from "@/models/User";
 import { logAuditActivity } from "@/lib/audit";
+import { sendAchievementEmail } from "@/lib/email";
 
 const HARDCODED_ACHIEVEMENTS: any[] = [
   { _id: "1", name: "First Steps", description: "Complete your first task", category: "Milestone", icon: "🎯", points: 10, color: "#3b82f6" },
@@ -105,6 +106,30 @@ export async function POST(request: NextRequest) {
         })
       )
     );
+
+    // Send email notifications to the user
+    const recipientUser = await User.findById(userId).select("name email").lean();
+    const giftedByUser = await User.findById(currentUser.userId).select("name").lean();
+    
+    if (recipientUser) {
+      for (const achievementId of achievementIds) {
+        const achievement = HARDCODED_ACHIEVEMENTS.find((a) => a._id === achievementId);
+        if (achievement) {
+          try {
+            await sendAchievementEmail(
+              recipientUser.email,
+              recipientUser.name,
+              achievement.name,
+              achievement.description,
+              achievement.points,
+              giftedByUser?.name || "System"
+            );
+          } catch (emailError) {
+            console.error(`Failed to send achievement email to ${recipientUser.email}:`, emailError);
+          }
+        }
+      }
+    }
 
     await logAuditActivity({
       user: currentUser.userId,

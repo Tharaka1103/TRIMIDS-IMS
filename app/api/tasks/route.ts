@@ -4,6 +4,7 @@ import connectDB from '@/lib/db';
 import Task from '@/models/Task';
 import User from '@/models/User';
 import { logAuditActivity } from "@/lib/audit";
+import { sendTaskAssignmentEmail } from "@/lib/email";
 
 export async function GET(request: NextRequest) {
   try {
@@ -110,6 +111,25 @@ export async function POST(request: NextRequest) {
         })
       )
     );
+
+    // Send email notifications to assigned users
+    const assigneeUsers = await User.find({ _id: { $in: assignedUsers } }).select("name email").lean();
+    const assignedByUser = await User.findById(currentUser.userId).select("name").lean();
+    
+    for (const assignee of assigneeUsers) {
+      try {
+        await sendTaskAssignmentEmail(
+          assignee.email,
+          assignee.name,
+          title,
+          description || "",
+          new Date(dueDate).toLocaleDateString(),
+          assignedByUser?.name || "System"
+        );
+      } catch (emailError) {
+        console.error(`Failed to send email to ${assignee.email}:`, emailError);
+      }
+    }
 
     await logAuditActivity({
       user: currentUser.userId,
