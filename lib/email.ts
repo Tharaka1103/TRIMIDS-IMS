@@ -81,7 +81,7 @@ export const emailTemplates = {
           </div>
           
           <p>Please log in to your dashboard to view the complete task details and track your progress.</p>
-          <a href="${process.env.NEXT_PUBLIC_APP_URL}/dashboard" class="button">View Task Dashboard</a>
+          <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://ims.trimids.com'}/dashboard" class="button">View Task Dashboard</a>
           
           <div class="footer">
             <p>This is an automated email from TRIMIDS (Pvt) Ltd IMS System.</p>
@@ -131,7 +131,7 @@ export const emailTemplates = {
           
           <p style="text-align: center;">Keep up the excellent work! This achievement has been added to your profile.</p>
           <div style="text-align: center;">
-            <a href="${process.env.NEXT_PUBLIC_APP_URL}/intern/progress" class="button">View Your Achievements</a>
+            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://ims.trimids.com'}/intern/progress" class="button">View Your Achievements</a>
           </div>
           
           <div class="footer">
@@ -191,7 +191,7 @@ export const emailTemplates = {
           
           <p style="text-align: center;">Your performance has been evaluated. Please review the feedback and continue your great work!</p>
           <div style="text-align: center;">
-            <a href="${process.env.NEXT_PUBLIC_APP_URL}/intern/progress" class="button">View Full Evaluation</a>
+            <a href="${process.env.NEXT_PUBLIC_APP_URL || 'https://ims.trimids.com'}/intern/progress" class="button">View Full Evaluation</a>
           </div>
           
           <div class="footer">
