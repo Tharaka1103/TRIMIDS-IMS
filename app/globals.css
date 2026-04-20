@@ -51,7 +51,7 @@
 :root {
   --background: oklch(1 0 0);
   --foreground: oklch(0.148 0.004 228.8);
-  --card: oklch(1 0 0);
+  --card: oklch(98.639% 0.00426 237.36);
   --card-foreground: oklch(0.148 0.004 228.8);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.148 0.004 228.8);
@@ -84,9 +84,9 @@
 }
 
 .dark {
-  --background: oklch(0.148 0.004 228.8);
+  --background: oklch(0% 0 0);
   --foreground: oklch(0.987 0.002 197.1);
-  --card: oklch(0.218 0.008 223.9);
+  --card: oklch(13.983% 0.0275 228.79);
   --card-foreground: oklch(0.987 0.002 197.1);
   --popover: oklch(0.218 0.008 223.9);
   --popover-foreground: oklch(0.987 0.002 197.1);
@@ -146,4 +146,23 @@
   .dark.theme-violet { --primary: oklch(0.551 0.277 284.184); }
   .dark.theme-yellow { --primary: oklch(0.852 0.199 91.936); }
   .dark.theme-red { --primary: oklch(0.637 0.237 25.331); }
+}
+
+/* Hide vertical scrollbar, show horizontal */
+.scrollbar-hide-y {
+  scrollbar-width: thin;
+}
+.scrollbar-hide-y::-webkit-scrollbar {
+  width: 0px;
+  height: 8px;
+}
+.scrollbar-hide-y::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollbar-hide-y::-webkit-scrollbar-thumb {
+  background: oklch(0.5 0 0 / 30%);
+  border-radius: 4px;
+}
+.scrollbar-hide-y::-webkit-scrollbar-thumb:hover {
+  background: oklch(0.5 0 0 / 50%);
 }

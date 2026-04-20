@@ -8,7 +8,7 @@ import { logAuditActivity } from "@/lib/audit";
 export async function GET(req: NextRequest) {
   try {
     const currentUser = await getSession();
-    if (!currentUser || (!hasPermission(currentUser.role, "manage:system" as any) && currentUser.role !== "hr_manager")) {
+    if (!currentUser || (currentUser.role !== "admin" && currentUser.role !== "hr_manager")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
 export async function POST(request: NextRequest) {
   try {
     const currentUser = await getSession();
-    if (!currentUser || !hasPermission(currentUser.role, "manage:system" as any)) {
+    if (!currentUser || (currentUser.role !== "admin" && currentUser.role !== "hr_manager")) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     await connectDB();
     const department = await Department.create({ name, description });
-    
+
     await logAuditActivity({
       user: currentUser.userId,
       action: "create_department",

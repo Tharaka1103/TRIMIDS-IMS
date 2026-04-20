@@ -34,7 +34,10 @@ export async function PUT(req: NextRequest) {
     const updates = await req.json();
 
     await connectDB();
-    const user = await User.findById(session.userId);
+    // Exclude password from the initial fetch to avoid exposing it,
+    // but if we are saving we might need it? Actually Mongoose requires +password to bypass "required" validation
+    // wait, we can just use findByIdAndUpdate to avoid validation errors on unselected fields
+    const user = await User.findById(session.userId).select("+password");
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
@@ -46,11 +49,12 @@ export async function PUT(req: NextRequest) {
     Object.keys(updates).forEach((key) => {
       if (allowedFields.includes(key)) {
         if (key === "preferences") {
-          // Merge preferences instead of replacing entire object
-          user.preferences = {
-            ...user.preferences,
-            ...updates.preferences,
-          };
+          // Merge preferences safely
+          if (updates.preferences && typeof updates.preferences === 'object') {
+            Object.keys(updates.preferences).forEach((prefKey) => {
+              user.set(`preferences.${prefKey}`, updates.preferences[prefKey]);
+            });
+          }
         } else {
           user.set(key, updates[key]);
         }

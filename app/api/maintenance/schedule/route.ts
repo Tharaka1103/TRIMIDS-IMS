@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getSession } from '@/lib/auth';
 import { hasPermission } from "@/lib/permissions";
+import { PERMISSIONS } from "@/types/permissions";
 import connectDB from '@/lib/db';
 import MaintenanceWindow from '@/models/MaintenanceWindow';
 
@@ -8,14 +9,14 @@ export async function GET(request: Request) {
   try {
     const currentUser = await getSession();
     
-    if (!currentUser || !hasPermission(currentUser.role, "manage:system" as any)) {
+    if (!currentUser || !hasPermission(currentUser.role, PERMISSIONS.MAINTENANCE_MANAGE)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
     await connectDB();
     
     const schedules = await MaintenanceWindow.find()
-      .populate("createdBy", "name email")
+      .populate("scheduledBy", "name email")
       .sort({ startTime: -1 });
       
     return NextResponse.json(schedules);
@@ -32,7 +33,7 @@ export async function POST(request: Request) {
   try {
     const currentUser = await getSession();
     
-    if (!currentUser || !hasPermission(currentUser.role, "manage:system" as any)) {
+    if (!currentUser || !hasPermission(currentUser.role, PERMISSIONS.MAINTENANCE_MANAGE)) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 403 });
     }
 
@@ -75,7 +76,7 @@ export async function POST(request: Request) {
       startTime: new Date(startTime),
       endTime: new Date(endTime),
       status,
-      createdBy: currentUser.userId,
+      scheduledBy: currentUser.userId,
     });
 
     return NextResponse.json(newWindow, { status: 201 });

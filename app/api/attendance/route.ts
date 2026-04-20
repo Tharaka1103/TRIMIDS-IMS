@@ -1,23 +1,25 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getSession } from '@/lib/auth';
 import connectDB from '@/lib/db';
 import Attendance from '@/models/Attendance';
 import { startOfDay, endOfDay } from "date-fns";
+import { logAuditActivity } from "@/lib/audit";
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
   try {
     const currentUser = await getSession();
     if (!currentUser) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
-    
-    // Admin can see all, employees see their own.
-    const query = currentUser.role === "admin" ? {} : { user: currentUser.userId };
-    
+
+    // Admin/HR can see all, employees see their own.
+    const isAdminOrHR = (currentUser.role as any) === "admin" || currentUser.role === "hr_manager";
+    const query = isAdminOrHR ? {} : { user: currentUser.userId };
+
     const records = await Attendance.find(query)
       .populate("user", "name email")
       .sort({ date: -1 })
-      .limit(50);
+      .lean();
 
     return NextResponse.json(records);
   } catch (error) {
@@ -26,13 +28,13 @@ export async function GET(request: Request) {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
     const currentUser = await getSession();
     if (!currentUser) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     await connectDB();
-    
+
     const { action } = await request.json(); // "checkIn" or "checkOut"
     const now = new Date();
     const todayStart = startOfDay(now);
@@ -49,12 +51,18 @@ export async function POST(request: Request) {
       }
 
       const isLate = now.getHours() > 9; // example threshold 9 AM
-      record = await Attendance.create({
-        user: currentUser.userId,
-        date: todayStart,
-        status: isLate ? "late" : "present",
-        checkIn: now,
-      });
+      if (!record) {
+        record = await Attendance.create({
+          user: currentUser.userId,
+          date: todayStart,
+          status: isLate ? "late" : "present",
+          checkIn: now,
+        });
+      } else {
+        record.checkIn = now;
+        record.status = isLate ? "late" : "present";
+        await record.save();
+      }
 
     } else if (action === "checkOut") {
       if (!record || !record.checkIn) {
@@ -65,10 +73,24 @@ export async function POST(request: Request) {
       }
 
       record.checkOut = now;
+      if (record.checkIn) {
+        const diffMs = now.getTime() - record.checkIn.getTime();
+        const diffHrs = Math.round((diffMs / (1000 * 60 * 60)) * 100) / 100;
+        record.workHours = diffHrs;
+      }
       await record.save();
     } else {
-      return NextResponse.json({ error: "Invalid action" }, { status: 400 });
+      return NextResponse.json({ error: "Invalid action" }, { status: 400 });   
     }
+
+    await logAuditActivity({
+      user: currentUser.userId,
+      action: `attendance_${action}`,
+      resource: "attendance",
+      resourceId: record._id.toString(),
+      details: { action, time: now },
+      req: request
+    });
 
     return NextResponse.json(record, { status: 200 });
   } catch (error) {

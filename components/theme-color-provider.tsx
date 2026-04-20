@@ -72,13 +72,11 @@ export function ThemeColorProvider({
     root.classList.add(`theme-${themeColor}`);
   }, [themeColor, isMounted]);
 
-  if (!isMounted) {
-    return <>{children}</>;
-  }
-
   return (
     <ThemeColorContext.Provider value={{ themeColor, setThemeColor }}>
-      {children}
+      <div className={`theme-${themeColor} h-full`}>
+        {children}
+      </div>
     </ThemeColorContext.Provider>
   );
 }

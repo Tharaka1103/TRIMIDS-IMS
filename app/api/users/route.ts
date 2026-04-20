@@ -38,18 +38,31 @@ export async function POST(request: NextRequest) {
     await connectDB();
     const body = await request.json();
     
-    // In a real app we'd validate with Zod here
+    // Validate required fields
+    if (!body.name || !body.email || !body.role) {
+      return NextResponse.json({ error: "Name, email, and role are required" }, { status: 400 });
+    }
+
+    // Normalize role to lowercase
+    const normalizedRole = body.role.toLowerCase();
     
     const existingUser = await User.findOne({ email: body.email });
     if (existingUser) {
       return NextResponse.json({ error: "Email already exists" }, { status: 400 });
     }
 
-    const user = await User.create({
-      ...body,
+    const userData = {
+      name: body.name,
+      email: body.email.toLowerCase(),
+      role: normalizedRole,
+      department: body.department || "",
+      position: body.position || "",
+      isActive: body.isActive !== undefined ? body.isActive : true,
       createdBy: session.userId,
-      password: body.password || "Password@123" // default password if not provided
-    });
+      password: body.password || "Password@123"
+    };
+
+    const user = await User.create(userData);
 
       await logAuditActivity({
         user: session.userId,
@@ -67,6 +80,7 @@ export async function POST(request: NextRequest) {
         { status: 201 }
       );
     } catch (error: any) {
+    console.error("POST /api/users error:", error);
     return NextResponse.json(
       { error: error.message || "Internal server error" },
       { status: 500 }

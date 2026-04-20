@@ -63,7 +63,13 @@ async function getAdminStats() {
     .select("name email role isActive createdAt")
     .sort({ createdAt: -1 })
     .limit(5)
-    .lean();
+    .lean()
+    .then((users) =>
+      users.map((user) => ({
+        ...user,
+        _id: user._id.toString(),
+      }))
+    );
 
   return {
     totalUsers,

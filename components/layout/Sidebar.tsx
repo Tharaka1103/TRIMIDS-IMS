@@ -114,31 +114,28 @@ const getNavItems = (role: Role, unreadCount: number = 0): NavItem[] => {
       href: "#",
       icon: Users,
       children: [
-        {
-          title: "Intern View",
-          href: "/admin/view/intern",
-          icon: GraduationCap,
-        },
-        {
-          title: "Employee View",
-          href: "/admin/view/employee",
-          icon: UserCheck,
-        },
-        {
-          title: "HR Manager View",
-          href: "/admin/view/hr",
-          icon: Users,
-        },
-        {
-          title: "Finance Manager View",
-          href: "/admin/view/finance",
-          icon: DollarSign,
-        },
-        {
-          title: "Marketing Manager View",
-          href: "/admin/view/marketing",
-          icon: Megaphone,
-        },
+        { title: "Employee Dashboard", href: "/employee", icon: LayoutDashboard },
+        { title: "Employee Tasks", href: "/employee/tasks", icon: ClipboardList },
+        { title: "Employee Leaves", href: "/employee/leaves", icon: Calendar },
+        { title: "Employee Attendance", href: "/employee/attendance", icon: Clock },
+        { title: "Intern Dashboard", href: "/intern", icon: LayoutDashboard },
+        { title: "Intern Tasks", href: "/intern/tasks", icon: ClipboardList },
+        { title: "Intern Attendance", href: "/intern/attendance", icon: Clock },
+        { title: "Intern Documents", href: "/intern/documents", icon: FileText },
+        { title: "Intern Progress", href: "/intern/progress", icon: TrendingUp },
+        { title: "HR Dashboard", href: "/hr", icon: LayoutDashboard },
+        { title: "HR Employees", href: "/hr/employees", icon: Users },
+        { title: "HR Leaves", href: "/hr/leaves", icon: FileText },
+        { title: "HR Assign Tasks", href: "/hr/tasks", icon: FileText },
+        { title: "HR Manage Interns", href: "/hr/interns", icon: FileText },
+        { title: "HR Recruitment", href: "/hr/recruitment", icon: UserCheck },
+        { title: "Finance Dashboard", href: "/finance", icon: LayoutDashboard },
+        { title: "Finance Finances", href: "/finance/finances", icon: DollarSign },
+        { title: "Finance Payroll", href: "/finance/payroll", icon: PieChart },
+        { title: "Finance Reports", href: "/finance/reports", icon: BarChart3 },
+        { title: "Marketing Dashboard", href: "/marketing", icon: LayoutDashboard },
+        { title: "Marketing Campaigns", href: "/marketing/campaigns", icon: Target },
+        { title: "Marketing Analytics", href: "/marketing/analytics", icon: BarChart3 },
       ],
     },
     {
@@ -166,6 +163,7 @@ const getNavItems = (role: Role, unreadCount: number = 0): NavItem[] => {
   const employeeItems: NavItem[] = [
     { title: "Dashboard", href: "/employee", icon: LayoutDashboard },
     { title: "My Tasks", href: "/employee/tasks", icon: ClipboardList },
+    { title: "Employee Leaves", href: "/employee/leaves", icon: Calendar },
     { title: "Attendance", href: "/employee/attendance", icon: Clock },
     {
       title: "Notifications",
@@ -180,6 +178,8 @@ const getNavItems = (role: Role, unreadCount: number = 0): NavItem[] => {
     { title: "Dashboard", href: "/hr", icon: LayoutDashboard },
     { title: "Employees", href: "/hr/employees", icon: Users },
     { title: "Leaves", href: "/hr/leaves", icon: FileText },
+    { title: "HR Manage Interns", href: "/hr/interns", icon: FileText },
+    { title: "HR Recruitment", href: "/hr/recruitment", icon: UserCheck },
     { title: "Recruitment", href: "/hr/recruitment", icon: UserCheck },
     {
       title: "Notifications",
@@ -192,7 +192,7 @@ const getNavItems = (role: Role, unreadCount: number = 0): NavItem[] => {
 
   const financeItems: NavItem[] = [
     { title: "Dashboard", href: "/finance", icon: LayoutDashboard },
-    { title: "Expenses", href: "/finance/expenses", icon: DollarSign },
+    { title: "Finances", href: "/finance/finances", icon: DollarSign },
     { title: "Payroll", href: "/finance/payroll", icon: PieChart },
     { title: "Reports", href: "/finance/reports", icon: BarChart3 },
     {
@@ -318,7 +318,7 @@ export function Sidebar({
                       className={cn(
                         "w-full justify-start gap-3 h-10 px-3 font-normal",
                         hasActiveChild &&
-                          "bg-accent text-accent-foreground font-medium"
+                        "bg-accent text-accent-foreground font-medium"
                       )}
                     >
                       <item.icon className="w-4 h-4 shrink-0" />
@@ -344,7 +344,7 @@ export function Sidebar({
                           className={cn(
                             "w-full justify-start gap-3 h-9 px-3 font-normal text-sm",
                             isActive(child.href) &&
-                              "bg-primary/10 text-primary font-medium"
+                            "bg-primary/10 text-primary font-medium"
                           )}
                         >
                           <child.icon className="w-3.5 h-3.5 shrink-0" />
@@ -364,7 +364,7 @@ export function Sidebar({
                   className={cn(
                     "w-full justify-start gap-3 h-10 px-3 font-normal relative",
                     isActive(item.href) &&
-                      "bg-primary/10 text-primary font-medium hover:bg-primary/15"
+                    "bg-primary/10 text-primary font-medium hover:bg-primary/15"
                   )}
                 >
                   <item.icon className="w-4 h-4 shrink-0" />

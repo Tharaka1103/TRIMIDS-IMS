@@ -76,9 +76,10 @@ type UserFormValues = z.infer<typeof userSchema>;
 
 interface UsersClientProps {
   initialUsers: any[];
+  departments: any[];
 }
 
-export function UsersClient({ initialUsers }: UsersClientProps) {
+export function UsersClient({ initialUsers, departments }: UsersClientProps) {
   const router = useRouter();
   const [users, setUsers] = useState(initialUsers);
   
@@ -416,11 +417,21 @@ export function UsersClient({ initialUsers }: UsersClientProps) {
 
             <div className="grid gap-2">
               <Label htmlFor="department">Department</Label>
-              <Input
-                id="department"
-                placeholder="e.g. Engineering"
-                {...form.register("department")}
-              />
+              <Select 
+                onValueChange={(val) => form.setValue("department", val)} 
+                defaultValue={form.getValues("department")}
+              >
+                <SelectTrigger>
+                  <SelectValue placeholder="Select a department" />
+                </SelectTrigger>
+                <SelectContent>
+                  {departments.map((dept) => (
+                    <SelectItem key={dept._id} value={dept.name}>
+                      {dept.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
 
             <div className="grid gap-2">
