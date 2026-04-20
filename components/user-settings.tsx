@@ -37,11 +37,22 @@ const profileSchema = z.object({
   color: z.enum(["zinc", "slate", "stone", "gray", "neutral", "red", "rose", "orange", "green", "blue", "yellow", "violet"]),
 });
 
+const passwordSchema = z.object({
+  currentPassword: z.string().min(1, "Current password is required"),
+  newPassword: z.string().min(6, "New password must be at least 6 characters"),
+  confirmPassword: z.string().min(6, "Confirm password is required"),
+}).refine((data) => data.newPassword === data.confirmPassword, {
+  message: "Passwords do not match",
+  path: ["confirmPassword"],
+});
+
 type ProfileFormValues = z.infer<typeof profileSchema>;
+type PasswordFormValues = z.infer<typeof passwordSchema>;
 
 export function UserSettings() {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [changingPassword, setChangingPassword] = useState(false);
   const { setTheme, theme, themeColor, setThemeColor } = useTheme();
 
   const form = useForm<ProfileFormValues>({
@@ -53,6 +64,15 @@ export function UserSettings() {
       emailNotifications: true,
       theme: "system",
       color: "zinc",
+    },
+  });
+
+  const passwordForm = useForm<PasswordFormValues>({
+    resolver: zodResolver(passwordSchema),
+    defaultValues: {
+      currentPassword: "",
+      newPassword: "",
+      confirmPassword: "",
     },
   });
 
@@ -126,6 +146,34 @@ export function UserSettings() {
     }
   }
 
+  async function onPasswordChange(data: PasswordFormValues) {
+    setChangingPassword(true);
+    try {
+      const res = await fetch("/api/users/change-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          currentPassword: data.currentPassword,
+          newPassword: data.newPassword,
+        }),
+      });
+
+      if (res.ok) {
+        toast.success("Password changed successfully");
+        passwordForm.reset();
+      } else {
+        const error = await res.json();
+        toast.error(error.error || "Failed to change password");
+      }
+    } catch (error) {
+      toast.error("Something went wrong");
+    } finally {
+      setChangingPassword(false);
+    }
+  }
+
   if (loading) {
     return (
       <div className="flex h-64 items-center justify-center">
@@ -142,7 +190,7 @@ export function UserSettings() {
           Manage your account profile and system preferences.
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-6">
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="space-y-4">
             <h3 className="text-lg font-medium">Profile Information</h3>
@@ -159,6 +207,66 @@ export function UserSettings() {
               <div className="space-y-2">
                 <Label htmlFor="mobile">Mobile Number</Label>
                 <Input id="mobile" {...form.register("mobile")} />
+              </div>
+            </div>
+          </div>
+
+          <Separator />
+
+          <div className="space-y-4">
+            <h3 className="text-lg font-medium">Change Password</h3>
+            <div className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="currentPassword">Current Password</Label>
+                  <Input 
+                    id="currentPassword" 
+                    type="password" 
+                    {...passwordForm.register("currentPassword")} 
+                  />
+                  {passwordForm.formState.errors.currentPassword && (
+                    <p className="text-sm text-destructive">
+                      {passwordForm.formState.errors.currentPassword.message}
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="newPassword">New Password</Label>
+                  <Input 
+                    id="newPassword" 
+                    type="password" 
+                    {...passwordForm.register("newPassword")} 
+                  />
+                  {passwordForm.formState.errors.newPassword && (
+                    <p className="text-sm text-destructive">
+                      {passwordForm.formState.errors.newPassword.message}
+                    </p>
+                  )}
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="confirmPassword">Confirm Password</Label>
+                  <Input 
+                    id="confirmPassword" 
+                    type="password" 
+                    {...passwordForm.register("confirmPassword")} 
+                  />
+                  {passwordForm.formState.errors.confirmPassword && (
+                    <p className="text-sm text-destructive">
+                      {passwordForm.formState.errors.confirmPassword.message}
+                    </p>
+                  )}
+                </div>
+              </div>
+              <div className="flex justify-end">
+                <Button 
+                  type="button"
+                  variant="outline" 
+                  disabled={changingPassword || !passwordForm.formState.isDirty}
+                  onClick={passwordForm.handleSubmit(onPasswordChange)}
+                >
+                  {changingPassword && <Spinner className="mr-2 h-4 w-4" />}
+                  Change Password
+                </Button>
               </div>
             </div>
           </div>
