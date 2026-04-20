@@ -148,8 +148,8 @@ const getNavItems = (role: Role, unreadCount: number = 0): NavItem[] => {
   const internItems: NavItem[] = [
     { title: "Dashboard", href: "/intern", icon: LayoutDashboard },
     { title: "My Tasks", href: "/intern/tasks", icon: ClipboardList },
-    { title: "Attendance", href: "/intern/attendance", icon: Clock },
-    { title: "Documents", href: "/intern/documents", icon: FileText },
+    /*{ title: "Attendance", href: "/intern/attendance", icon: Clock },
+    { title: "Documents", href: "/intern/documents", icon: FileText },*/
     { title: "Progress", href: "/intern/progress", icon: TrendingUp },
     {
       title: "Notifications",
