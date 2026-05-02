@@ -272,7 +272,7 @@ export default function HRInternsPage() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6">
+    <div className="flex-1 space-y-6 pl-4 pr-4">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Intern Management</h2>
@@ -421,45 +421,45 @@ export default function HRInternsPage() {
               [...interns]
                 .sort((a, b) => parseFloat(getAverageScore(b._id)) - parseFloat(getAverageScore(a._id)))
                 .map((intern, index) => {
-                const internEvals = getInternEvaluations(intern._id);
-                const avgScore = parseFloat(getAverageScore(intern._id));
-                const scoreNum = isNaN(avgScore) ? 0 : avgScore;
-                const rank = index + 1;
-                const rankColor = rank === 1 ? "text-yellow-500" : rank === 2 ? "text-gray-400" : rank === 3 ? "text-amber-600" : "text-muted-foreground";
-                const rankIcon = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : `#${rank}`;
-                return (
-                  <Card key={intern._id} className="hover:shadow-lg transition-shadow">
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-4">
-                        <div className="text-2xl font-bold w-12 text-center">{rankIcon}</div>
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <h3 className="font-semibold">{intern.name}</h3>
-                            {rank <= 3 && <Badge className="bg-gradient-to-r from-yellow-400 to-amber-500 text-white">Top {rank}</Badge>}
+                  const internEvals = getInternEvaluations(intern._id);
+                  const avgScore = parseFloat(getAverageScore(intern._id));
+                  const scoreNum = isNaN(avgScore) ? 0 : avgScore;
+                  const rank = index + 1;
+                  const rankColor = rank === 1 ? "text-yellow-500" : rank === 2 ? "text-gray-400" : rank === 3 ? "text-amber-600" : "text-muted-foreground";
+                  const rankIcon = rank === 1 ? "🥇" : rank === 2 ? "🥈" : rank === 3 ? "🥉" : `#${rank}`;
+                  return (
+                    <Card key={intern._id} className="hover:shadow-lg transition-shadow">
+                      <CardContent className="p-4">
+                        <div className="flex items-center gap-4">
+                          <div className="text-2xl font-bold w-12 text-center">{rankIcon}</div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <h3 className="font-semibold">{intern.name}</h3>
+                              {rank <= 3 && <Badge className="bg-gradient-to-r from-yellow-400 to-amber-500 text-white">Top {rank}</Badge>}
+                            </div>
+                            <p className="text-sm text-muted-foreground">{intern.email}</p>
                           </div>
-                          <p className="text-sm text-muted-foreground">{intern.email}</p>
-                        </div>
-                        <div className="text-right space-y-1">
-                          <div className="text-sm text-muted-foreground">Evaluations</div>
-                          <div className="font-medium">{internEvals.length}</div>
-                        </div>
-                        <div className="text-right space-y-1">
-                          <div className="text-sm text-muted-foreground">Avg Score</div>
-                          <div className={`font-bold ${scoreNum >= 4 ? "text-green-600" : scoreNum >= 3 ? "text-yellow-600" : "text-red-600"}`}>
-                            {scoreNum}/5
+                          <div className="text-right space-y-1">
+                            <div className="text-sm text-muted-foreground">Evaluations</div>
+                            <div className="font-medium">{internEvals.length}</div>
+                          </div>
+                          <div className="text-right space-y-1">
+                            <div className="text-sm text-muted-foreground">Avg Score</div>
+                            <div className={`font-bold ${scoreNum >= 4 ? "text-green-600" : scoreNum >= 3 ? "text-yellow-600" : "text-red-600"}`}>
+                              {scoreNum}/5
+                            </div>
+                          </div>
+                          <div className="text-right space-y-1">
+                            <div className="text-sm text-muted-foreground">Latest Week</div>
+                            <div className="font-medium text-sm">
+                              {internEvals.length > 0 ? `W${internEvals[0].weekNumber}` : "N/A"}
+                            </div>
                           </div>
                         </div>
-                        <div className="text-right space-y-1">
-                          <div className="text-sm text-muted-foreground">Latest Week</div>
-                          <div className="font-medium text-sm">
-                            {internEvals.length > 0 ? `W${internEvals[0].weekNumber}` : "N/A"}
-                          </div>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                );
-              })
+                      </CardContent>
+                    </Card>
+                  );
+                })
             )}
           </div>
         </TabsContent>
@@ -504,8 +504,8 @@ export default function HRInternsPage() {
                     {achievements.map((achievement) => {
                       const isAlreadyGifted = alreadyGiftedAchievements.includes(achievement._id);
                       return (
-                        <div 
-                          key={achievement._id} 
+                        <div
+                          key={achievement._id}
                           className={`flex items-start gap-3 p-3 border rounded-lg ${isAlreadyGifted ? 'bg-muted/50 opacity-60 cursor-not-allowed' : 'hover:bg-accent cursor-pointer'}`}
                           onClick={() => {
                             if (!isAlreadyGifted) {
@@ -520,7 +520,7 @@ export default function HRInternsPage() {
                           <Checkbox
                             checked={isAlreadyGifted || selectedAchievements.includes(achievement._id)}
                             disabled={isAlreadyGifted}
-                            onChange={() => {}}
+                            onChange={() => { }}
                           />
                           <div className="flex-1">
                             <div className="flex items-center gap-2">

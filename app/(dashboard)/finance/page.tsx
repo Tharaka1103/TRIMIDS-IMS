@@ -134,7 +134,7 @@ export default function FinanceDashboardPage() {
   const trendChartData = Object.values(trendData).sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime());
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 pl-4 pr-4">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Finance Command Center</h2>
@@ -153,42 +153,42 @@ export default function FinanceDashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-             <CardTitle className="text-sm font-medium">Total Income</CardTitle>
-             <TrendingUp className="h-4 w-4 text-green-500" />
+            <CardTitle className="text-sm font-medium">Total Income</CardTitle>
+            <TrendingUp className="h-4 w-4 text-green-500" />
           </CardHeader>
           <CardContent>
-             <div className="text-2xl font-bold text-green-600">${totalIncome.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div> 
-             <p className="text-xs text-muted-foreground mt-1">Approved & Paid</p>
+            <div className="text-2xl font-bold text-green-600">${totalIncome.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+            <p className="text-xs text-muted-foreground mt-1">Approved & Paid</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-             <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
-             <TrendingDown className="h-4 w-4 text-red-500" />     
+            <CardTitle className="text-sm font-medium">Total Expenses</CardTitle>
+            <TrendingDown className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-             <div className="text-2xl font-bold text-red-600">${totalExpenses.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
-             <p className="text-xs text-muted-foreground mt-1">Approved & Paid</p>
+            <div className="text-2xl font-bold text-red-600">${totalExpenses.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+            <p className="text-xs text-muted-foreground mt-1">Approved & Paid</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-             <CardTitle className="text-sm font-medium">Net Balance</CardTitle>
-             <DollarSign className="h-4 w-4 text-blue-500" />
+            <CardTitle className="text-sm font-medium">Net Balance</CardTitle>
+            <DollarSign className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent>
-             <div className={`text-2xl font-bold ${netBalance >= 0 ? 'text-green-600' : 'text-red-600'}`}>${netBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
-             <p className="text-xs text-muted-foreground mt-1">Income - Expenses</p>     
+            <div className={`text-2xl font-bold ${netBalance >= 0 ? 'text-green-600' : 'text-red-600'}`}>${netBalance.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+            <p className="text-xs text-muted-foreground mt-1">Income - Expenses</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-             <CardTitle className="text-sm font-medium">Pending</CardTitle>  
-             <Wallet className="h-4 w-4 text-amber-500" />
+            <CardTitle className="text-sm font-medium">Pending</CardTitle>
+            <Wallet className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-             <div className="text-2xl font-bold text-amber-600">${pendingAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>    
-             <p className="text-xs text-muted-foreground mt-1">Awaiting approval</p>
+            <div className="text-2xl font-bold text-amber-600">${pendingAmount.toLocaleString(undefined, { minimumFractionDigits: 2 })}</div>
+            <p className="text-xs text-muted-foreground mt-1">Awaiting approval</p>
           </CardContent>
         </Card>
       </div>
@@ -199,20 +199,20 @@ export default function FinanceDashboardPage() {
             <CardTitle>Financial Trend Analysis</CardTitle>
           </CardHeader>
           <CardContent>
-             <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={trendChartData}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="date" axisLine={false} tickLine={false} tickFormatter={(value) => format(new Date(value), 'MMM dd')} />
-                    <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `$${value}`} />
-                    <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-                    <Legend />
-                    <Line type="monotone" dataKey="income" stroke="#10b981" strokeWidth={2} dot={{ r: 4 }} name="Income" />
-                    <Line type="monotone" dataKey="expense" stroke="#ef4444" strokeWidth={2} dot={{ r: 4 }} name="Expense" />
-                    <Line type="monotone" dataKey="balance" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4 }} name="Balance" />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
+            <div className="h-[300px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={trendChartData}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="date" axisLine={false} tickLine={false} tickFormatter={(value) => format(new Date(value), 'MMM dd')} />
+                  <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `$${value}`} />
+                  <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                  <Legend />
+                  <Line type="monotone" dataKey="income" stroke="#10b981" strokeWidth={2} dot={{ r: 4 }} name="Income" />
+                  <Line type="monotone" dataKey="expense" stroke="#ef4444" strokeWidth={2} dot={{ r: 4 }} name="Expense" />
+                  <Line type="monotone" dataKey="balance" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4 }} name="Balance" />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
 
@@ -221,17 +221,17 @@ export default function FinanceDashboardPage() {
             <CardTitle>Income by Category</CardTitle>
           </CardHeader>
           <CardContent>
-             <div className="h-[350px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart data={incomeCategoryData}>
-                    <PolarGrid strokeDasharray="3 3" />
-                    <PolarAngleAxis dataKey="category" tick={{ fontSize: 10 }} />
-                    <PolarRadiusAxis angle={90} domain={[0, 'auto']} tickFormatter={(value) => `$${value}`} tick={{ fontSize: 10 }} />
-                    <Radar name="Income" dataKey="amount" stroke="#10b981" fill="#10b981" fillOpacity={0.6} strokeWidth={2} />
-                    <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-                  </RadarChart>
-                </ResponsiveContainer>
-              </div>
+            <div className="h-[350px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart data={incomeCategoryData}>
+                  <PolarGrid strokeDasharray="3 3" />
+                  <PolarAngleAxis dataKey="category" tick={{ fontSize: 10 }} />
+                  <PolarRadiusAxis angle={90} domain={[0, 'auto']} tickFormatter={(value) => `$${value}`} tick={{ fontSize: 10 }} />
+                  <Radar name="Income" dataKey="amount" stroke="#10b981" fill="#10b981" fillOpacity={0.6} strokeWidth={2} />
+                  <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
 
@@ -240,17 +240,17 @@ export default function FinanceDashboardPage() {
             <CardTitle>Expenses by Category</CardTitle>
           </CardHeader>
           <CardContent>
-             <div className="h-[350px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RadarChart data={expenseCategoryData}>
-                    <PolarGrid strokeDasharray="3 3" />
-                    <PolarAngleAxis dataKey="category" tick={{ fontSize: 10 }} />
-                    <PolarRadiusAxis angle={90} domain={[0, 'auto']} tickFormatter={(value) => `$${value}`} tick={{ fontSize: 10 }} />
-                    <Radar name="Expenses" dataKey="amount" stroke="#ef4444" fill="#ef4444" fillOpacity={0.6} strokeWidth={2} />
-                    <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-                  </RadarChart>
-                </ResponsiveContainer>
-              </div>
+            <div className="h-[350px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <RadarChart data={expenseCategoryData}>
+                  <PolarGrid strokeDasharray="3 3" />
+                  <PolarAngleAxis dataKey="category" tick={{ fontSize: 10 }} />
+                  <PolarRadiusAxis angle={90} domain={[0, 'auto']} tickFormatter={(value) => `$${value}`} tick={{ fontSize: 10 }} />
+                  <Radar name="Expenses" dataKey="amount" stroke="#ef4444" fill="#ef4444" fillOpacity={0.6} strokeWidth={2} />
+                  <Tooltip contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                </RadarChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
 
@@ -259,19 +259,19 @@ export default function FinanceDashboardPage() {
             <CardTitle>Monthly Cash Flow</CardTitle>
           </CardHeader>
           <CardContent>
-             <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={chartData}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="name" axisLine={false} tickLine={false} />
-                    <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `$${value}`} />
-                    <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-                    <Legend />
-                    <Bar dataKey="income" fill="#10b981" radius={[4, 4, 0, 0]} name="Income" />
-                    <Bar dataKey="expense" fill="#ef4444" radius={[4, 4, 0, 0]} name="Expense" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
+            <div className="h-[300px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={chartData}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} />
+                  <YAxis axisLine={false} tickLine={false} tickFormatter={(value) => `$${value}`} />
+                  <Tooltip cursor={{ fill: 'transparent' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                  <Legend />
+                  <Bar dataKey="income" fill="#10b981" radius={[4, 4, 0, 0]} name="Income" />
+                  <Bar dataKey="expense" fill="#ef4444" radius={[4, 4, 0, 0]} name="Expense" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
 
@@ -280,28 +280,28 @@ export default function FinanceDashboardPage() {
             <CardTitle>Expense Distribution</CardTitle>
           </CardHeader>
           <CardContent>
-             <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <RechartsPieChart>
-                    <Pie
-                      data={pieData}
-                      cx="50%"
-                      cy="50%"
-                      labelLine={false}
-                      label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
-                      outerRadius={80}
-                      fill="#8884d8"
-                      dataKey="value"
-                    >
-                      {pieData.map((entry: any, index: number) => (
-                        <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                      ))}
-                    </Pie>
-                    <Tooltip />
-                    <Legend />
-                  </RechartsPieChart>
-                </ResponsiveContainer>
-              </div>
+            <div className="h-[300px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <RechartsPieChart>
+                  <Pie
+                    data={pieData}
+                    cx="50%"
+                    cy="50%"
+                    labelLine={false}
+                    label={({ name, percent }) => `${name} ${((percent ?? 0) * 100).toFixed(0)}%`}
+                    outerRadius={80}
+                    fill="#8884d8"
+                    dataKey="value"
+                  >
+                    {pieData.map((entry: any, index: number) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip />
+                  <Legend />
+                </RechartsPieChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
       </div>

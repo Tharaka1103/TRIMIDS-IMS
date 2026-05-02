@@ -39,7 +39,7 @@ export default function MarketingDashboardPage() {
   ];
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 pl-4 pr-4">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Marketing HQ</h2>
@@ -55,42 +55,42 @@ export default function MarketingDashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-             <CardTitle className="text-sm font-medium">Active Campaigns</CardTitle>
-             <Target className="h-4 w-4 text-emerald-500" />
+            <CardTitle className="text-sm font-medium">Active Campaigns</CardTitle>
+            <Target className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
-             <div className="text-2xl font-bold text-emerald-600">{activeCampaignsCount}</div> 
-             <p className="text-xs text-muted-foreground mt-1">Currently running</p>
+            <div className="text-2xl font-bold text-emerald-600">{activeCampaignsCount}</div>
+            <p className="text-xs text-muted-foreground mt-1">Currently running</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-             <CardTitle className="text-sm font-medium">Total Spend (Live)</CardTitle>
-             <DollarSign className="h-4 w-4 text-amber-500" />     
+            <CardTitle className="text-sm font-medium">Total Spend (Live)</CardTitle>
+            <DollarSign className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-             <div className="text-2xl font-bold">${totalSpent.toLocaleString()}</div>
-             <p className="text-xs text-muted-foreground mt-1">Of ${totalBudget.toLocaleString()} allocated budget</p>
+            <div className="text-2xl font-bold">${totalSpent.toLocaleString()}</div>
+            <p className="text-xs text-muted-foreground mt-1">Of ${totalBudget.toLocaleString()} allocated budget</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-             <CardTitle className="text-sm font-medium">New Leads (Monthly)</CardTitle>
-             <Users className="h-4 w-4 text-blue-500" />
+            <CardTitle className="text-sm font-medium">New Leads (Monthly)</CardTitle>
+            <Users className="h-4 w-4 text-blue-500" />
           </CardHeader>
           <CardContent>
-             <div className="text-2xl font-bold">1,842</div>
-             <p className="text-xs text-muted-foreground mt-1">+14.5% vs last month</p>     
+            <div className="text-2xl font-bold">1,842</div>
+            <p className="text-xs text-muted-foreground mt-1">+14.5% vs last month</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-             <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>  
-             <TrendingUp className="h-4 w-4 text-purple-500" />
+            <CardTitle className="text-sm font-medium">Conversion Rate</CardTitle>
+            <TrendingUp className="h-4 w-4 text-purple-500" />
           </CardHeader>
           <CardContent>
-             <div className="text-2xl font-bold">4.2%</div>    
-             <p className="text-xs text-muted-foreground mt-1">+0.8% trajectory</p>
+            <div className="text-2xl font-bold">4.2%</div>
+            <p className="text-xs text-muted-foreground mt-1">+0.8% trajectory</p>
           </CardContent>
         </Card>
       </div>
@@ -101,19 +101,19 @@ export default function MarketingDashboardPage() {
             <CardTitle>Inbound Traffic Validation</CardTitle>
           </CardHeader>
           <CardContent>
-             <div className="h-[300px] w-full">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={data}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis dataKey="name" axisLine={false} tickLine={false} />
-                    <YAxis yAxisId="left" axisLine={false} tickLine={false} />
-                    <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
-                    <Tooltip cursor={{ stroke: '#cbd5e1' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
-                    <Line yAxisId="left" type="monotone" dataKey="traffic" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-                    <Line yAxisId="right" type="monotone" dataKey="conversion" stroke="#8b5cf6" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
+            <div className="h-[300px] w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={data}>
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} />
+                  <YAxis yAxisId="left" axisLine={false} tickLine={false} />
+                  <YAxis yAxisId="right" orientation="right" axisLine={false} tickLine={false} />
+                  <Tooltip cursor={{ stroke: '#cbd5e1' }} contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }} />
+                  <Line yAxisId="left" type="monotone" dataKey="traffic" stroke="#3b82f6" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+                  <Line yAxisId="right" type="monotone" dataKey="conversion" stroke="#8b5cf6" strokeWidth={2} dot={{ r: 4 }} activeDot={{ r: 6 }} />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
 
@@ -140,7 +140,7 @@ export default function MarketingDashboardPage() {
                     <div className="flex flex-col items-end gap-1">
                       <Badge variant={
                         campaign.status === "Active" ? "default" :
-                        campaign.status === "Completed" ? "secondary" : "outline"
+                          campaign.status === "Completed" ? "secondary" : "outline"
                       } className={campaign.status === "Active" ? "bg-emerald-500" : ""}>
                         {campaign.status}
                       </Badge>

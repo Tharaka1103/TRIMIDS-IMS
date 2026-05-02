@@ -120,10 +120,20 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
+    /* Hide scrollbar for Firefox, IE and Edge */
+    scrollbar-width: none !important;
+    -ms-overflow-style: none !important;
   }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  *::-webkit-scrollbar {
+    display: none !important;
+  }
+
   body {
     @apply bg-background text-foreground;
   }
+
   html {
     @apply font-sans;
   }
@@ -131,38 +141,82 @@
 
 /* Custom Themes Section */
 @layer base {
-  .theme-rose { --primary: oklch(0.645 0.246 16.439); }
-  .theme-blue { --primary: oklch(0.606 0.169 253.94); }
-  .theme-green { --primary: oklch(0.627 0.194 149.214); }
-  .theme-orange { --primary: oklch(0.705 0.213 47.604); }
-  .theme-violet { --primary: oklch(0.551 0.277 284.184); }
-  .theme-yellow { --primary: oklch(0.852 0.199 91.936); }
-  .theme-red { --primary: oklch(0.637 0.237 25.331); }
+  .theme-rose {
+    --primary: oklch(0.645 0.246 16.439);
+  }
 
-  .dark.theme-rose { --primary: oklch(0.645 0.246 16.439); }
-  .dark.theme-blue { --primary: oklch(0.606 0.169 253.94); }
-  .dark.theme-green { --primary: oklch(0.627 0.194 149.214); }
-  .dark.theme-orange { --primary: oklch(0.705 0.213 47.604); }
-  .dark.theme-violet { --primary: oklch(0.551 0.277 284.184); }
-  .dark.theme-yellow { --primary: oklch(0.852 0.199 91.936); }
-  .dark.theme-red { --primary: oklch(0.637 0.237 25.331); }
+  .theme-blue {
+    --primary: oklch(0.606 0.169 253.94);
+  }
+
+  .theme-green {
+    --primary: oklch(0.627 0.194 149.214);
+  }
+
+  .theme-orange {
+    --primary: oklch(0.705 0.213 47.604);
+  }
+
+  .theme-violet {
+    --primary: oklch(0.551 0.277 284.184);
+  }
+
+  .theme-yellow {
+    --primary: oklch(0.852 0.199 91.936);
+  }
+
+  .theme-red {
+    --primary: oklch(0.637 0.237 25.331);
+  }
+
+  .dark.theme-rose {
+    --primary: oklch(0.645 0.246 16.439);
+  }
+
+  .dark.theme-blue {
+    --primary: oklch(0.606 0.169 253.94);
+  }
+
+  .dark.theme-green {
+    --primary: oklch(0.627 0.194 149.214);
+  }
+
+  .dark.theme-orange {
+    --primary: oklch(0.705 0.213 47.604);
+  }
+
+  .dark.theme-violet {
+    --primary: oklch(0.551 0.277 284.184);
+  }
+
+  .dark.theme-yellow {
+    --primary: oklch(0.852 0.199 91.936);
+  }
+
+  .dark.theme-red {
+    --primary: oklch(0.637 0.237 25.331);
+  }
 }
 
 /* Hide vertical scrollbar, show horizontal */
 .scrollbar-hide-y {
-  scrollbar-width: thin;
+  scrollbar-width: thin !important;
 }
+
 .scrollbar-hide-y::-webkit-scrollbar {
-  width: 0px;
-  height: 8px;
+  width: 0px !important;
+  height: 8px !important;
 }
+
 .scrollbar-hide-y::-webkit-scrollbar-track {
-  background: transparent;
+  background: transparent !important;
 }
+
 .scrollbar-hide-y::-webkit-scrollbar-thumb {
-  background: oklch(0.5 0 0 / 30%);
-  border-radius: 4px;
+  background: oklch(0.5 0 0 / 30%) !important;
+  border-radius: 4px !important;
 }
+
 .scrollbar-hide-y::-webkit-scrollbar-thumb:hover {
-  background: oklch(0.5 0 0 / 50%);
+  background: oklch(0.5 0 0 / 50%) !important;
 }

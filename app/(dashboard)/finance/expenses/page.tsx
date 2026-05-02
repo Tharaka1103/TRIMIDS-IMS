@@ -47,12 +47,12 @@ export default function FinanceExpensesPage() {
 
   const filteredExpenses = expenses.filter((e: any) => {
     const matchesSearch = e.description?.toLowerCase().includes(search.toLowerCase()) ||
-                          e.user?.name?.toLowerCase().includes(search.toLowerCase());
+      e.user?.name?.toLowerCase().includes(search.toLowerCase());
     const matchesStatus = statusFilter === "All" || e.status === statusFilter;
   });
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 pl-4 pr-4">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Expense Management</h2>
         <p className="text-muted-foreground">Review, approve, and process employee expense claims.</p>
@@ -114,8 +114,8 @@ export default function FinanceExpensesPage() {
                     <TableCell>
                       <Badge variant={
                         expense.status === "Approved" ? "default" :
-                        expense.status === "Paid" ? "secondary" :
-                        expense.status === "Rejected" ? "destructive" : "outline"
+                          expense.status === "Paid" ? "secondary" :
+                            expense.status === "Rejected" ? "destructive" : "outline"
                       }>
                         {expense.status}
                       </Badge>

@@ -44,7 +44,7 @@ export default function EmployeeAttendancePage() {
   ) as any;
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 pl-4 pr-4">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Attendance</h2>
         <p className="text-muted-foreground">Clock in and out of your shift.</p>
@@ -73,12 +73,12 @@ export default function EmployeeAttendancePage() {
       <div className="rounded-md border bg-card">
         <Table>
           <TableHeader>
-             <TableRow>
-               <TableHead>Date</TableHead>
-               <TableHead>Check In</TableHead>
-               <TableHead>Check Out</TableHead>
-               <TableHead>Status</TableHead>
-             </TableRow>
+            <TableRow>
+              <TableHead>Date</TableHead>
+              <TableHead>Check In</TableHead>
+              <TableHead>Check Out</TableHead>
+              <TableHead>Status</TableHead>
+            </TableRow>
           </TableHeader>
           <TableBody>
             {data.map((record: any) => (

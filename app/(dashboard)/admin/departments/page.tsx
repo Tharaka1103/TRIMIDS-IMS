@@ -17,7 +17,7 @@ export default function AdminDepartmentsPage() {
   const [departments, setDepartments] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -59,7 +59,7 @@ export default function AdminDepartmentsPage() {
   const filtered = departments.filter((d) => d.name.toLowerCase().includes(search.toLowerCase()));
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 pl-4 pr-4">
       <div className="flex items-center justify-between space-y-2">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Departments</h2>
@@ -107,9 +107,9 @@ export default function AdminDepartmentsPage() {
           </TableHeader>
           <TableBody>
             {loading ? (
-               <TableRow><TableCell colSpan={5} className="text-center h-24">Loading...</TableCell></TableRow>
+              <TableRow><TableCell colSpan={5} className="text-center h-24">Loading...</TableCell></TableRow>
             ) : filtered.length === 0 ? (
-               <TableRow><TableCell colSpan={5} className="text-center h-24">No departments found.</TableCell></TableRow>
+              <TableRow><TableCell colSpan={5} className="text-center h-24">No departments found.</TableCell></TableRow>
             ) : (
               filtered.map((dept) => (
                 <TableRow key={dept._id}>

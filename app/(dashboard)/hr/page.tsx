@@ -34,7 +34,7 @@ export default function HRDashboardPage() {
   const pendingLeaves = leaves.filter((l: any) => l.status === "Pending");
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 pl-4 pr-4">
       <div>
         <h2 className="text-3xl font-bold tracking-tight">Human Resources</h2>
         <p className="text-muted-foreground">Manage personnel, leaves, and recruitment.</p>
@@ -43,42 +43,42 @@ export default function HRDashboardPage() {
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-             <CardTitle className="text-sm font-medium">Total Employees</CardTitle>
-             <Users className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Total Employees</CardTitle>
+            <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-             <div className="text-2xl font-bold">142</div>
-             <p className="text-xs text-muted-foreground mt-1">+4 from last month</p>
+            <div className="text-2xl font-bold">142</div>
+            <p className="text-xs text-muted-foreground mt-1">+4 from last month</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-             <CardTitle className="text-sm font-medium">Pending Leaves</CardTitle>
-             <FileText className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Pending Leaves</CardTitle>
+            <FileText className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-             <div className="text-2xl font-bold text-amber-600 border-amber-600">{pendingLeaves.length}</div>
-             <p className="text-xs text-muted-foreground mt-1">Requires approval</p>
+            <div className="text-2xl font-bold text-amber-600 border-amber-600">{pendingLeaves.length}</div>
+            <p className="text-xs text-muted-foreground mt-1">Requires approval</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-             <CardTitle className="text-sm font-medium">Open Positions</CardTitle>
-             <UserPlus className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Open Positions</CardTitle>
+            <UserPlus className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-             <div className="text-2xl font-bold text-blue-600">3</div>
-             <p className="text-xs text-muted-foreground mt-1">Active job postings</p>
+            <div className="text-2xl font-bold text-blue-600">3</div>
+            <p className="text-xs text-muted-foreground mt-1">Active job postings</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-             <CardTitle className="text-sm font-medium">Interns Active</CardTitle>
-             <Activity className="h-4 w-4 text-muted-foreground" />
+            <CardTitle className="text-sm font-medium">Interns Active</CardTitle>
+            <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-             <div className="text-2xl font-bold">12</div>
-             <p className="text-xs text-muted-foreground mt-1">Currently enrolled</p>
+            <div className="text-2xl font-bold">12</div>
+            <p className="text-xs text-muted-foreground mt-1">Currently enrolled</p>
           </CardContent>
         </Card>
       </div>
@@ -100,9 +100,9 @@ export default function HRDashboardPage() {
               </TableHeader>
               <TableBody>
                 {loading ? (
-                   <TableRow><TableCell colSpan={4} className="text-center">Loading leaves...</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={4} className="text-center">Loading leaves...</TableCell></TableRow>
                 ) : pendingLeaves.length === 0 ? (
-                   <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">No pending leaves.</TableCell></TableRow>
+                  <TableRow><TableCell colSpan={4} className="text-center text-muted-foreground">No pending leaves.</TableCell></TableRow>
                 ) : (
                   pendingLeaves.slice(0, 3).map((leave: any) => (
                     <TableRow key={leave._id}>
@@ -124,7 +124,7 @@ export default function HRDashboardPage() {
             </Table>
           </CardContent>
         </Card>
-        
+
         <Card className="col-span-3">
           <CardHeader>
             <CardTitle>Recent Onboarding</CardTitle>

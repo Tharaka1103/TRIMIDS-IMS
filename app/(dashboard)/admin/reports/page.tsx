@@ -34,7 +34,7 @@ export default function ReportsPage() {
   const [summary, setSummary] = useState<SummaryData | null>(null);
   const [loading, setLoading] = useState(true);
   const [generateLoading, setGenerateLoading] = useState<string | null>(null);
-  
+
   // Dialog state
   const [customReportOpen, setCustomReportOpen] = useState(false);
   const [selectedModel, setSelectedModel] = useState<string>("");
@@ -66,9 +66,9 @@ export default function ReportsPage() {
     try {
       const res = await fetch(`/api/reports/export?type=${type}`);
       if (!res.ok) throw new Error("Failed to fetch report data");
-      
+
       const { title, columns, data } = await res.json();
-      
+
       if (!data || data.length === 0) {
         toast.warning("No data available to generate report for " + title);
         return;
@@ -76,14 +76,14 @@ export default function ReportsPage() {
 
       // Generate PDF
       const doc = new jsPDF();
-      
+
       // Header
       doc.setFontSize(20);
       doc.text(title, 14, 22);
       doc.setFontSize(11);
       doc.setTextColor(100);
       doc.text(`Generated on: ${format(new Date(), "PPpp")}`, 14, 30);
-      
+
       // AutoTable
       autoTable(doc, {
         startY: 36,
@@ -108,7 +108,7 @@ export default function ReportsPage() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6">
+    <div className="flex-1 space-y-6 pl-4 pr-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-2 sm:space-y-0">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">System Reports</h2>
@@ -118,11 +118,11 @@ export default function ReportsPage() {
         </div>
         <div className="flex items-center space-x-2">
           <Button variant="outline" onClick={fetchSummary} disabled={loading}>
-            <RefreshCw className={`mr-2 h-4 w-4 ${loading ? "animate-spin" : ""}`} /> 
+            <RefreshCw className={`mr-2 h-4 w-4 ${loading ? "animate-spin" : ""}`} />
             Refresh
           </Button>
           <Button onClick={() => { setSelectedModel(""); setCustomReportOpen(true); }}>
-            <FileDown className="mr-2 h-4 w-4" /> 
+            <FileDown className="mr-2 h-4 w-4" />
             Custom Export
           </Button>
         </div>
@@ -144,7 +144,7 @@ export default function ReportsPage() {
               <CardContent>
                 <div className="text-3xl font-bold">
                   {loading ? (
-                     <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+                    <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
                   ) : (
                     count || "0"
                   )}
@@ -154,8 +154,8 @@ export default function ReportsPage() {
                 </p>
               </CardContent>
               <CardFooter>
-                <Button 
-                  variant="secondary" 
+                <Button
+                  variant="secondary"
                   className="w-full mt-2"
                   onClick={() => generatePdf(card.id)}
                   disabled={generateLoading === card.id || loading || !count}
@@ -198,14 +198,14 @@ export default function ReportsPage() {
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setCustomReportOpen(false)}>Cancel</Button>
-            <Button 
-               disabled={!selectedModel || generateLoading !== null} 
-               onClick={() => generatePdf(selectedModel)}
+            <Button
+              disabled={!selectedModel || generateLoading !== null}
+              onClick={() => generatePdf(selectedModel)}
             >
               {generateLoading ? (
-                 <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating...</>
+                <><Loader2 className="mr-2 h-4 w-4 animate-spin" /> Generating...</>
               ) : (
-                 "Generate PDF Report"
+                "Generate PDF Report"
               )}
             </Button>
           </DialogFooter>

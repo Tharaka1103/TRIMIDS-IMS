@@ -31,14 +31,14 @@ export default function HREmployeesPage() {
   };
 
   const filteredEmployees = employees.filter((e: any) => {
-    const matchesSearch = e.name?.toLowerCase().includes(search.toLowerCase()) || 
-                          e.email?.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = e.name?.toLowerCase().includes(search.toLowerCase()) ||
+      e.email?.toLowerCase().includes(search.toLowerCase());
     const matchesRole = roleFilter === "All" || e.role === roleFilter.toLowerCase() || e.role?.includes(roleFilter.toLowerCase());
     return matchesSearch && matchesRole;
   });
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 pl-4 pr-4">
       <div className="flex justify-between items-center mb-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Employee Directory</h2>

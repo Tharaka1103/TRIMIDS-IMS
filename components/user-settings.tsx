@@ -18,12 +18,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Spinner } from "@/components/ui/spinner";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Separator } from "@/components/ui/separator";
@@ -219,10 +219,10 @@ export function UserSettings() {
               <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div className="space-y-2">
                   <Label htmlFor="currentPassword">Current Password</Label>
-                  <Input 
-                    id="currentPassword" 
-                    type="password" 
-                    {...passwordForm.register("currentPassword")} 
+                  <Input
+                    id="currentPassword"
+                    type="password"
+                    {...passwordForm.register("currentPassword")}
                   />
                   {passwordForm.formState.errors.currentPassword && (
                     <p className="text-sm text-destructive">
@@ -232,10 +232,10 @@ export function UserSettings() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="newPassword">New Password</Label>
-                  <Input 
-                    id="newPassword" 
-                    type="password" 
-                    {...passwordForm.register("newPassword")} 
+                  <Input
+                    id="newPassword"
+                    type="password"
+                    {...passwordForm.register("newPassword")}
                   />
                   {passwordForm.formState.errors.newPassword && (
                     <p className="text-sm text-destructive">
@@ -245,10 +245,10 @@ export function UserSettings() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="confirmPassword">Confirm Password</Label>
-                  <Input 
-                    id="confirmPassword" 
-                    type="password" 
-                    {...passwordForm.register("confirmPassword")} 
+                  <Input
+                    id="confirmPassword"
+                    type="password"
+                    {...passwordForm.register("confirmPassword")}
                   />
                   {passwordForm.formState.errors.confirmPassword && (
                     <p className="text-sm text-destructive">
@@ -258,9 +258,9 @@ export function UserSettings() {
                 </div>
               </div>
               <div className="flex justify-end">
-                <Button 
+                <Button
                   type="button"
-                  variant="outline" 
+                  variant="outline"
                   disabled={changingPassword || !passwordForm.formState.isDirty}
                   onClick={passwordForm.handleSubmit(onPasswordChange)}
                 >
@@ -293,7 +293,7 @@ export function UserSettings() {
                 </Select>
               </div>
 
-              <div className="space-y-2">
+              {/*<div className="space-y-2">
                 <Label>Primary System Color</Label>
                 <Select
                   value={form.watch("color")}
@@ -312,7 +312,7 @@ export function UserSettings() {
                     <SelectItem value="yellow">Yellow</SelectItem>
                   </SelectContent>
                 </Select>
-              </div>
+              </div>*/}
             </div>
 
             <div className="flex items-center justify-between mt-4">

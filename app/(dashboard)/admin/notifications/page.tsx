@@ -172,7 +172,7 @@ export default function AdminNotificationsPage() {
   };
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6">
+    <div className="flex-1 space-y-6 pl-4 pr-4">
       <div className="flex items-center justify-between space-y-2">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Notification Center</h2>
@@ -187,269 +187,268 @@ export default function AdminNotificationsPage() {
           <TabsTrigger value="compose">Compose Notification</TabsTrigger>
           <TabsTrigger value="history">Sent History</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="inbox" className="mt-6"><div className="max-w-5xl"><NotificationsInbox userId="admin_id" /></div></TabsContent><TabsContent value="compose" className="mt-6">
           <div className="grid gap-6 md:grid-cols-2">
-        <Card className="col-span-1 md:col-span-2 lg:col-span-1 border shadow-sm">
-          <CardHeader className="bg-muted/30 border-b pb-4 mb-4">
-            <CardTitle className="flex items-center gap-2 text-xl">
-              <Megaphone className="h-5 w-5 text-primary" /> Compose Notification
-            </CardTitle>
-            <CardDescription>
-              Craft your message and select the appropriate audience.
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form id="notification-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
-              <div className="space-y-2">
-                <Label htmlFor="title" className="font-semibold">Title</Label>
-                <Input
-                  id="title"
-                  placeholder="e.g. Scheduled Maintenance Notice"
-                  {...form.register("title")}
-                  className={form.formState.errors.title ? "border-red-500" : ""}
-                />
-                {form.formState.errors.title && (
-                  <p className="text-xs text-red-500">{form.formState.errors.title.message}</p>
-                )}
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="message" className="font-semibold">Message</Label>
-                <Textarea
-                  id="message"
-                  placeholder="Provide more details here..."
-                  className={`min-h-[120px] ${form.formState.errors.message ? "border-red-500" : ""}`}
-                  {...form.register("message")}
-                />
-                {form.formState.errors.message && (
-                  <p className="text-xs text-red-500">{form.formState.errors.message.message}</p>
-                )}
-              </div>
-
-              <div className="grid gap-4 md:grid-cols-2">
-                <div className="space-y-2">
-                  <Label className="font-semibold">Notification Type</Label>
-                  <Select
-                    onValueChange={(value) => form.setValue("type", value as any)}
-                    defaultValue={form.watch("type")}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="announcement">Announcement</SelectItem>
-                      <SelectItem value="system_alert">System Alert</SelectItem>
-                      <SelectItem value="maintenance_scheduled">Maintenance Scheduled</SelectItem>
-                      <SelectItem value="report_ready">Report Ready</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="font-semibold">Priority Level</Label>
-                  <Select
-                    onValueChange={(value) => form.setValue("priority", value as any)}
-                    defaultValue={form.watch("priority")}
-                  >
-                    <SelectTrigger>
-                      <div className="flex items-center gap-2">
-                        <PriorityIcon />
-                        <SelectValue placeholder="Select priority" />
-                      </div>
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="low">Low - General Info</SelectItem>
-                      <SelectItem value="medium">Medium - Standard</SelectItem>
-                      <SelectItem value="high">High - Important</SelectItem>
-                      <SelectItem value="critical">Critical - Urgent Action</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <Label className="font-semibold">Target Audience</Label>
-                <div className="rounded-md border p-4 space-y-3 bg-muted/10">
-                  <div className="flex items-center space-x-2 border-b pb-3 mb-1">
-                    <Checkbox
-                      id="all-roles"
-                      checked={form.watch("targetRoles").includes("all") || form.watch("targetRoles").length >= ROLES.length}
-                      onCheckedChange={handleSelectAllRoles}
+            <Card className="col-span-1 md:col-span-2 lg:col-span-1 border shadow-sm">
+              <CardHeader className="bg-muted/30 border-b pb-4 mb-4">
+                <CardTitle className="flex items-center gap-2 text-xl">
+                  <Megaphone className="h-5 w-5 text-primary" /> Compose Notification
+                </CardTitle>
+                <CardDescription>
+                  Craft your message and select the appropriate audience.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <form id="notification-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  <div className="space-y-2">
+                    <Label htmlFor="title" className="font-semibold">Title</Label>
+                    <Input
+                      id="title"
+                      placeholder="e.g. Scheduled Maintenance Notice"
+                      {...form.register("title")}
+                      className={form.formState.errors.title ? "border-red-500" : ""}
                     />
-                    <Label htmlFor="all-roles" className="font-medium">All Organization Members</Label>
+                    {form.formState.errors.title && (
+                      <p className="text-xs text-red-500">{form.formState.errors.title.message}</p>
+                    )}
                   </div>
-                  <div className="grid grid-cols-2 gap-3 pl-2">
-                    {ROLES.map((role) => (
-                      <div key={role.id} className="flex items-center space-x-2">
+
+                  <div className="space-y-2">
+                    <Label htmlFor="message" className="font-semibold">Message</Label>
+                    <Textarea
+                      id="message"
+                      placeholder="Provide more details here..."
+                      className={`min-h-[120px] ${form.formState.errors.message ? "border-red-500" : ""}`}
+                      {...form.register("message")}
+                    />
+                    {form.formState.errors.message && (
+                      <p className="text-xs text-red-500">{form.formState.errors.message.message}</p>
+                    )}
+                  </div>
+
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div className="space-y-2">
+                      <Label className="font-semibold">Notification Type</Label>
+                      <Select
+                        onValueChange={(value) => form.setValue("type", value as any)}
+                        defaultValue={form.watch("type")}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Select type" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="announcement">Announcement</SelectItem>
+                          <SelectItem value="system_alert">System Alert</SelectItem>
+                          <SelectItem value="maintenance_scheduled">Maintenance Scheduled</SelectItem>
+                          <SelectItem value="report_ready">Report Ready</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label className="font-semibold">Priority Level</Label>
+                      <Select
+                        onValueChange={(value) => form.setValue("priority", value as any)}
+                        defaultValue={form.watch("priority")}
+                      >
+                        <SelectTrigger>
+                          <div className="flex items-center gap-2">
+                            <PriorityIcon />
+                            <SelectValue placeholder="Select priority" />
+                          </div>
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="low">Low - General Info</SelectItem>
+                          <SelectItem value="medium">Medium - Standard</SelectItem>
+                          <SelectItem value="high">High - Important</SelectItem>
+                          <SelectItem value="critical">Critical - Urgent Action</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                  </div>
+
+                  <div className="space-y-3">
+                    <Label className="font-semibold">Target Audience</Label>
+                    <div className="rounded-md border p-4 space-y-3 bg-muted/10">
+                      <div className="flex items-center space-x-2 border-b pb-3 mb-1">
                         <Checkbox
-                          id={`role-${role.id}`}
-                          checked={form.watch("targetRoles").includes(role.id)}
-                          onCheckedChange={(checked) => {
-                            const currentRoles = form.watch("targetRoles").filter((r) => r !== "all");
-                            if (checked) {
-                              form.setValue("targetRoles", [...currentRoles, role.id]);
-                            } else {
-                              form.setValue(
-                                "targetRoles",
-                                currentRoles.filter((r) => r !== role.id)
-                              );
-                            }
-                          }}
+                          id="all-roles"
+                          checked={form.watch("targetRoles").includes("all") || form.watch("targetRoles").length >= ROLES.length}
+                          onCheckedChange={handleSelectAllRoles}
                         />
-                        <Label htmlFor={`role-${role.id}`} className="font-normal cursor-pointer">
-                          {role.label}
-                        </Label>
+                        <Label htmlFor="all-roles" className="font-medium">All Organization Members</Label>
                       </div>
-                    ))}
+                      <div className="grid grid-cols-2 gap-3 pl-2">
+                        {ROLES.map((role) => (
+                          <div key={role.id} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`role-${role.id}`}
+                              checked={form.watch("targetRoles").includes(role.id)}
+                              onCheckedChange={(checked) => {
+                                const currentRoles = form.watch("targetRoles").filter((r) => r !== "all");
+                                if (checked) {
+                                  form.setValue("targetRoles", [...currentRoles, role.id]);
+                                } else {
+                                  form.setValue(
+                                    "targetRoles",
+                                    currentRoles.filter((r) => r !== role.id)
+                                  );
+                                }
+                              }}
+                            />
+                            <Label htmlFor={`role-${role.id}`} className="font-normal cursor-pointer">
+                              {role.label}
+                            </Label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    {form.formState.errors.targetRoles && (
+                      <p className="text-xs text-red-500 mt-1">{form.formState.errors.targetRoles.message}</p>
+                    )}
                   </div>
-                </div>
-                {form.formState.errors.targetRoles && (
-                  <p className="text-xs text-red-500 mt-1">{form.formState.errors.targetRoles.message}</p>
-                )}
-              </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="link" className="font-semibold">Action Link (Optional)</Label>
-                <Input
-                  id="link"
-                  placeholder="https://example.com/action-required"
-                  {...form.register("link")}
-                  className={form.formState.errors.link ? "border-red-500" : ""}
-                />
-                {form.formState.errors.link && (
-                  <p className="text-xs text-red-500">{form.formState.errors.link.message}</p>
-                )}
-                <p className="text-xs text-muted-foreground">Add an optional URL where users can go for more details.</p>
-              </div>
-            </form>
-          </CardContent>
-          <CardFooter className="bg-muted/30 border-t p-4 flex justify-between">
-            <p className="text-sm text-muted-foreground hidden md:block">
-              Double check your audience before sending.
-            </p>
-            <Button
-              type="submit"
-              form="notification-form"
-              disabled={isSubmitting}
-              className="w-full md:w-auto"
-            >
-              {isSubmitting ? (
-                <span className="flex items-center gap-2">Sending... <Bell className="animate-spin w-4 h-4" /></span>
-              ) : (
-                <span className="flex items-center gap-2"><Send className="w-4 h-4" /> Send Notification</span>
-              )}
-            </Button>
-          </CardFooter>
-        </Card>
+                  <div className="space-y-2">
+                    <Label htmlFor="link" className="font-semibold">Action Link (Optional)</Label>
+                    <Input
+                      id="link"
+                      placeholder="https://example.com/action-required"
+                      {...form.register("link")}
+                      className={form.formState.errors.link ? "border-red-500" : ""}
+                    />
+                    {form.formState.errors.link && (
+                      <p className="text-xs text-red-500">{form.formState.errors.link.message}</p>
+                    )}
+                    <p className="text-xs text-muted-foreground">Add an optional URL where users can go for more details.</p>
+                  </div>
+                </form>
+              </CardContent>
+              <CardFooter className="bg-muted/30 border-t p-4 flex justify-between">
+                <p className="text-sm text-muted-foreground hidden md:block">
+                  Double check your audience before sending.
+                </p>
+                <Button
+                  type="submit"
+                  form="notification-form"
+                  disabled={isSubmitting}
+                  className="w-full md:w-auto"
+                >
+                  {isSubmitting ? (
+                    <span className="flex items-center gap-2">Sending... <Bell className="animate-spin w-4 h-4" /></span>
+                  ) : (
+                    <span className="flex items-center gap-2"><Send className="w-4 h-4" /> Send Notification</span>
+                  )}
+                </Button>
+              </CardFooter>
+            </Card>
 
-        {/* Live Preview Panel */}
-        <div className="hidden lg:block space-y-6">
-          <Card className="border-dashed shadow-none bg-muted/10 h-full">
+            {/* Live Preview Panel */}
+            <div className="hidden lg:block space-y-6">
+              <Card className="border-dashed shadow-none bg-muted/10 h-full">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2 text-lg text-muted-foreground">
+                    <Info className="h-5 w-5" /> Live Preview
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="relative overflow-hidden rounded-lg border bg-background p-6 shadow-md mx-auto max-w-sm mt-4">
+                    <div className="flex justify-between items-start mb-4 gap-4">
+                      <div className="flex gap-3">
+                        <div className={`p-2 rounded-full h-fit flex-shrink-0 ${form.watch("priority") === "critical" ? "bg-red-100 text-red-600" :
+                            form.watch("priority") === "high" ? "bg-orange-100 text-orange-600" :
+                              form.watch("priority") === "medium" ? "bg-blue-100 text-blue-600" :
+                                "bg-green-100 text-green-600"
+                          }`}>
+                          <Bell className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h4 className="text-sm font-semibold truncate w-48 leading-tight">
+                            {form.watch("title") || "Notification Title"}
+                          </h4>
+                          <p className="text-xs text-muted-foreground mt-0.5">Just now</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div className="text-sm text-foreground/90 whitespace-pre-wrap break-words min-h-[60px]">
+                      {form.watch("message") || "Message body preview..."}
+                    </div>
+                    {form.watch("link") && !form.formState.errors.link && (
+                      <div className="mt-4">
+                        <Button variant="outline" size="sm" className="w-full text-xs h-8" disabled>
+                          View Details
+                        </Button>
+                      </div>
+                    )}
+                  </div>
+                  <div className="mt-8 text-center text-sm text-muted-foreground">
+                    <p>This is how the notification card might appear inside the users' layout.</p>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="history" className="mt-6">
+          <Card className="border shadow-sm">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-lg text-muted-foreground">
-                <Info className="h-5 w-5" /> Live Preview
-              </CardTitle>
+              <CardTitle>Sent Notifications History</CardTitle>
+              <CardDescription>View messages you've recently broadcasted to the organization.</CardDescription>
             </CardHeader>
             <CardContent>
-              <div className="relative overflow-hidden rounded-lg border bg-background p-6 shadow-md mx-auto max-w-sm mt-4">
-                <div className="flex justify-between items-start mb-4 gap-4">
-                  <div className="flex gap-3">
-                    <div className={`p-2 rounded-full h-fit flex-shrink-0 ${
-                      form.watch("priority") === "critical" ? "bg-red-100 text-red-600" :
-                      form.watch("priority") === "high" ? "bg-orange-100 text-orange-600" :
-                      form.watch("priority") === "medium" ? "bg-blue-100 text-blue-600" :
-                      "bg-green-100 text-green-600"
-                    }`}>
-                      <Bell className="w-5 h-5" />
-                    </div>
-                    <div>
-                      <h4 className="text-sm font-semibold truncate w-48 leading-tight">
-                        {form.watch("title") || "Notification Title"}
-                      </h4>
-                      <p className="text-xs text-muted-foreground mt-0.5">Just now</p>
-                    </div>
-                  </div>
-                </div>
-                <div className="text-sm text-foreground/90 whitespace-pre-wrap break-words min-h-[60px]">
-                  {form.watch("message") || "Message body preview..."}
-                </div>
-                {form.watch("link") && !form.formState.errors.link && (
-                  <div className="mt-4">
-                    <Button variant="outline" size="sm" className="w-full text-xs h-8" disabled>
-                      View Details
-                    </Button>
-                  </div>
-                )}
-              </div>
-              <div className="mt-8 text-center text-sm text-muted-foreground">
-                <p>This is how the notification card might appear inside the users' layout.</p>
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[200px]">Title</TableHead>
+                      <TableHead>Message Extract</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Priority</TableHead>
+                      <TableHead>Recipients</TableHead>
+                      <TableHead>Date Sent</TableHead>
+                      <TableHead className="text-right">Action</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {loadingHistory ? (
+                      <TableRow>
+                        <TableCell colSpan={7} className="text-center h-24">Loading history...</TableCell>
+                      </TableRow>
+                    ) : history.length === 0 ? (
+                      <TableRow>
+                        <TableCell colSpan={7} className="text-center h-24">No notifications sent yet.</TableCell>
+                      </TableRow>
+                    ) : (
+                      history.map((note) => (
+                        <TableRow key={note._id}>
+                          <TableCell className="font-medium truncate max-w-[200px]">{note.title}</TableCell>
+                          <TableCell className="truncate max-w-[250px]">{note.message}</TableCell>
+                          <TableCell className="capitalize">{note.type.replace(/_/g, ' ')}</TableCell>
+                          <TableCell>{getPriorityBadge(note.priority)}</TableCell>
+                          <TableCell>
+                            <div className="flex flex-wrap gap-1">
+                              {note.recipientRoles?.map((r: string) => (
+                                <Badge key={r} variant="outline" className="text-xs capitalize">{r.replace('_', ' ')}</Badge>
+                              ))}
+                            </div>
+                          </TableCell>
+                          <TableCell className="text-sm whitespace-nowrap">{format(new Date(note.createdAt), "MMM d, h:mm a")}</TableCell>
+                          <TableCell className="text-right">
+                            <Button variant="destructive" size="icon" className="h-8 w-8" onClick={() => handleDelete(note._id)}>
+                              <Trash2 className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    )}
+                  </TableBody>
+                </Table>
               </div>
             </CardContent>
           </Card>
-        </div>
-      </div>
-      </TabsContent>
-
-      <TabsContent value="history" className="mt-6">
-        <Card className="border shadow-sm">
-          <CardHeader>
-            <CardTitle>Sent Notifications History</CardTitle>
-            <CardDescription>View messages you've recently broadcasted to the organization.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="rounded-md border">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead className="w-[200px]">Title</TableHead>
-                    <TableHead>Message Extract</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Priority</TableHead>
-                    <TableHead>Recipients</TableHead>
-                    <TableHead>Date Sent</TableHead>
-                    <TableHead className="text-right">Action</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {loadingHistory ? (
-                    <TableRow>
-                      <TableCell colSpan={7} className="text-center h-24">Loading history...</TableCell>
-                    </TableRow>
-                  ) : history.length === 0 ? (
-                    <TableRow>
-                      <TableCell colSpan={7} className="text-center h-24">No notifications sent yet.</TableCell>
-                    </TableRow>
-                  ) : (
-                    history.map((note) => (
-                      <TableRow key={note._id}>
-                        <TableCell className="font-medium truncate max-w-[200px]">{note.title}</TableCell>
-                        <TableCell className="truncate max-w-[250px]">{note.message}</TableCell>
-                        <TableCell className="capitalize">{note.type.replace(/_/g, ' ')}</TableCell>
-                        <TableCell>{getPriorityBadge(note.priority)}</TableCell>
-                        <TableCell>
-                          <div className="flex flex-wrap gap-1">
-                            {note.recipientRoles?.map((r: string) => (
-                               <Badge key={r} variant="outline" className="text-xs capitalize">{r.replace('_', ' ')}</Badge>
-                            ))}
-                          </div>
-                        </TableCell>
-                        <TableCell className="text-sm whitespace-nowrap">{format(new Date(note.createdAt), "MMM d, h:mm a")}</TableCell>
-                        <TableCell className="text-right">
-                          <Button variant="destructive" size="icon" className="h-8 w-8" onClick={() => handleDelete(note._id)}>
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))
-                  )}
-                </TableBody>
-              </Table>
-            </div>
-          </CardContent>
-        </Card>
-      </TabsContent>
-    </Tabs>
+        </TabsContent>
+      </Tabs>
 
     </div>
   );

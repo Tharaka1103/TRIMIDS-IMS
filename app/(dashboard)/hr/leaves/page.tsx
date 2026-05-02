@@ -46,14 +46,14 @@ export default function HRLeavesPage() {
   };
 
   const filteredLeaves = leaves.filter((l: any) => {
-    const matchesSearch = l.user?.name.toLowerCase().includes(search.toLowerCase()) || 
-                          l.reason.toLowerCase().includes(search.toLowerCase());
+    const matchesSearch = l.user?.name.toLowerCase().includes(search.toLowerCase()) ||
+      l.reason.toLowerCase().includes(search.toLowerCase());
     const matchesStatus = statusFilter === "All" || l.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 pl-4 pr-4">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Time-Off Requests</h2>
@@ -118,7 +118,7 @@ export default function HRLeavesPage() {
                     <TableCell>
                       <Badge variant={
                         leave.status === "Approved" ? "default" :
-                        leave.status === "Rejected" ? "destructive" : "secondary"
+                          leave.status === "Rejected" ? "destructive" : "secondary"
                       } className={leave.status === "Approved" ? "bg-emerald-500" : ""}>
                         {leave.status}
                       </Badge>

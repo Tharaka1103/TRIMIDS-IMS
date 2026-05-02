@@ -18,7 +18,7 @@ export default function MarketingCampaignsPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  
+
   const [formData, setFormData] = useState({
     name: "",
     type: "Email",
@@ -84,12 +84,12 @@ export default function MarketingCampaignsPage() {
     }
   };
 
-  const filteredCampaigns = campaigns.filter((c: any) => 
+  const filteredCampaigns = campaigns.filter((c: any) =>
     c.name?.toLowerCase().includes(search.toLowerCase()) || c.type?.toLowerCase().includes(search.toLowerCase())
   );
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 pl-4 pr-4">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Campaign Manager</h2>
@@ -194,8 +194,8 @@ export default function MarketingCampaignsPage() {
                     <TableCell>
                       <Badge variant={
                         campaign.status === "Active" ? "default" :
-                        campaign.status === "Paused" ? "secondary" : 
-                        campaign.status === "Completed" ? "outline" : "outline"
+                          campaign.status === "Paused" ? "secondary" :
+                            campaign.status === "Completed" ? "outline" : "outline"
                       } className={campaign.status === "Active" ? "bg-emerald-500" : ""}>
                         {campaign.status}
                       </Badge>

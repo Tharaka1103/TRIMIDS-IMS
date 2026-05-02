@@ -52,14 +52,14 @@ export default function FinancePage() {
   const [typeFilter, setTypeFilter] = useState("All");
   const [statusFilter, setStatusFilter] = useState("All");
   const [viewMode, setViewMode] = useState("view"); // "view" or "edit"
-  
+
   // Dialog states
   const [isAddOpen, setIsAddOpen] = useState(false);
   const [isEditOpen, setIsEditOpen] = useState(false);
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   const [selectedFinance, setSelectedFinance] = useState<any>(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  
+
   // Form state
   const [formData, setFormData] = useState({
     type: "expense",
@@ -189,7 +189,7 @@ export default function FinancePage() {
 
   const filteredFinances = finances.filter((f: any) => {
     const matchesSearch = f.description?.toLowerCase().includes(search.toLowerCase()) ||
-                          f.category?.toLowerCase().includes(search.toLowerCase());
+      f.category?.toLowerCase().includes(search.toLowerCase());
     const matchesType = typeFilter === "All" || f.type === typeFilter;
     const matchesStatus = statusFilter === "All" || f.status === statusFilter;
     return matchesSearch && matchesType && matchesStatus;
@@ -272,7 +272,7 @@ export default function FinancePage() {
 
   if (viewMode === "view") {
     return (
-      <div className="flex-1 space-y-4 p-8 pt-6">
+      <div className="flex-1 space-y-4 pl-4 pr-4">
         <div className="flex items-center justify-between">
           <div>
             <h2 className="text-3xl font-bold tracking-tight">Finance Overview</h2>
@@ -482,8 +482,8 @@ export default function FinancePage() {
                       <TableCell>
                         <Badge variant={
                           finance.status === "Approved" ? "default" :
-                          finance.status === "Paid" ? "secondary" :
-                          finance.status === "Rejected" ? "destructive" : "outline"
+                            finance.status === "Paid" ? "secondary" :
+                              finance.status === "Rejected" ? "destructive" : "outline"
                         }>
                           {finance.status}
                         </Badge>
@@ -501,7 +501,7 @@ export default function FinancePage() {
 
   // Edit Mode
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 pl-4 pr-4">
       <div className="flex items-center justify-between">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Finance Management</h2>
@@ -590,8 +590,8 @@ export default function FinancePage() {
                     <TableCell>
                       <Badge variant={
                         finance.status === "Approved" ? "default" :
-                        finance.status === "Paid" ? "secondary" :
-                        finance.status === "Rejected" ? "destructive" : "outline"
+                          finance.status === "Paid" ? "secondary" :
+                            finance.status === "Rejected" ? "destructive" : "outline"
                       }>
                         {finance.status}
                       </Badge>

@@ -55,13 +55,13 @@ export default function AdminInternsPage() {
   const [interns, setInterns] = useState<Intern[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  
+
   // Dialog States
   const [addOpen, setAddOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
-  
+
   const [selectedIntern, setSelectedIntern] = useState<Intern | null>(null);
 
   const { register, handleSubmit, reset, formState: { errors }, setValue } = useForm<InternFormValues>({
@@ -96,10 +96,10 @@ export default function AdminInternsPage() {
         body: JSON.stringify({ isActive }),
       });
       if (res.ok) {
-         fetchInterns();
-         toast.success(`Intern ${isActive ? 'activated' : 'suspended'}`);
+        fetchInterns();
+        toast.success(`Intern ${isActive ? 'activated' : 'suspended'}`);
       } else {
-         toast.error("Failed to update status");
+        toast.error("Failed to update status");
       }
     } catch (e) {
       toast.error("Error occurred");
@@ -111,14 +111,14 @@ export default function AdminInternsPage() {
       toast.error("Password is required for new intern");
       return;
     }
-    
+
     try {
       const res = await fetch("/api/interns", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       });
-      
+
       if (res.ok) {
         toast.success("Intern added successfully");
         setAddOpen(false);
@@ -141,7 +141,7 @@ export default function AdminInternsPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       });
-      
+
       if (res.ok) {
         toast.success("Intern updated successfully");
         setEditOpen(false);
@@ -161,7 +161,7 @@ export default function AdminInternsPage() {
       const res = await fetch(`/api/interns/${selectedIntern._id}`, {
         method: "DELETE"
       });
-      
+
       if (res.ok) {
         toast.success("Intern deleted successfully");
         setDeleteOpen(false);
@@ -192,7 +192,7 @@ export default function AdminInternsPage() {
   );
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 pl-4 pr-4">
       <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-2 sm:space-y-0">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Intern Management</h2>
@@ -248,7 +248,7 @@ export default function AdminInternsPage() {
               ) : (
                 filteredInterns.map((intern) => (
                   <TableRow key={intern._id}>
-                    <TableCell className="font-medium">{intern.name}</TableCell>  
+                    <TableCell className="font-medium">{intern.name}</TableCell>
                     <TableCell>{intern.email}</TableCell>
                     <TableCell>{intern.department || "-"}</TableCell>
                     <TableCell>
@@ -265,7 +265,7 @@ export default function AdminInternsPage() {
                     <TableCell className="text-right">
                       <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                          <Button variant="ghost" className="h-8 w-8 p-0">        
+                          <Button variant="ghost" className="h-8 w-8 p-0">
                             <span className="sr-only">Open menu</span>
                             <MoreHorizontal className="h-4 w-4" />
                           </Button>
@@ -274,10 +274,10 @@ export default function AdminInternsPage() {
                           <DropdownMenuLabel>Actions</DropdownMenuLabel>
                           <DropdownMenuItem onClick={() => { setSelectedIntern(intern); setViewOpen(true); }}>
                             <Eye className="mr-2 h-4 w-4" /> View details
-                          </DropdownMenuItem>       
+                          </DropdownMenuItem>
                           <DropdownMenuItem onClick={() => openEdit(intern)}>
                             <Edit className="mr-2 h-4 w-4" /> Edit intern
-                          </DropdownMenuItem>        
+                          </DropdownMenuItem>
                           <DropdownMenuSeparator />
                           {intern.isActive ? (
                             <DropdownMenuItem className="text-amber-600" onClick={() => handleStatusChange(intern._id, false)}>
@@ -328,14 +328,14 @@ export default function AdminInternsPage() {
               {errors.password && <p className="text-xs text-red-500">{errors.password.message}</p>}
             </div>
             <div className="grid grid-cols-2 gap-4">
-               <div className="space-y-2">
-                 <Label htmlFor="department">Department</Label>
-                 <Input id="department" {...register("department")} placeholder="e.g. IT" />
-               </div>
-               <div className="space-y-2">
-                 <Label htmlFor="mobile">Mobile Number</Label>
-                 <Input id="mobile" {...register("mobile")} placeholder="+1 234 567 890" />
-               </div>
+              <div className="space-y-2">
+                <Label htmlFor="department">Department</Label>
+                <Input id="department" {...register("department")} placeholder="e.g. IT" />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="mobile">Mobile Number</Label>
+                <Input id="mobile" {...register("mobile")} placeholder="+1 234 567 890" />
+              </div>
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setAddOpen(false)}>Cancel</Button>
@@ -363,14 +363,14 @@ export default function AdminInternsPage() {
               {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
             </div>
             <div className="grid grid-cols-2 gap-4">
-               <div className="space-y-2">
-                 <Label htmlFor="edit-department">Department</Label>
-                 <Input id="edit-department" {...register("department")} />
-               </div>
-               <div className="space-y-2">
-                 <Label htmlFor="edit-mobile">Mobile Number</Label>
-                 <Input id="edit-mobile" {...register("mobile")} />
-               </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-department">Department</Label>
+                <Input id="edit-department" {...register("department")} />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="edit-mobile">Mobile Number</Label>
+                <Input id="edit-mobile" {...register("mobile")} />
+              </div>
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setEditOpen(false)}>Cancel</Button>
@@ -407,9 +407,9 @@ export default function AdminInternsPage() {
               <div className="grid grid-cols-3 gap-4 border-b pb-4">
                 <div className="col-span-1 text-sm font-medium text-muted-foreground">Status</div>
                 <div className="col-span-2 text-sm">
-                   <Badge variant={selectedIntern.isActive ? "default" : "secondary"} className={selectedIntern.isActive ? "bg-emerald-500 hover:bg-emerald-600 text-white" : ""}>
-                     {selectedIntern.isActive ? "Active" : "Suspended"}
-                   </Badge>
+                  <Badge variant={selectedIntern.isActive ? "default" : "secondary"} className={selectedIntern.isActive ? "bg-emerald-500 hover:bg-emerald-600 text-white" : ""}>
+                    {selectedIntern.isActive ? "Active" : "Suspended"}
+                  </Badge>
                 </div>
               </div>
               <div className="grid grid-cols-3 gap-4">
@@ -429,7 +429,7 @@ export default function AdminInternsPage() {
         <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle className="text-red-600 flex items-center gap-2">
-              <Trash2 className="h-5 w-5" /> 
+              <Trash2 className="h-5 w-5" />
               Delete Intern
             </DialogTitle>
           </DialogHeader>

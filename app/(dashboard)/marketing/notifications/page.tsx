@@ -9,7 +9,7 @@ export default async function MarketingNotificationsPage() {
   }
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 pl-4 pr-4">
       <div className="flex items-center justify-between space-y-2 mb-6">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Marketing Notifications</h2>
@@ -18,9 +18,9 @@ export default async function MarketingNotificationsPage() {
           </p>
         </div>
       </div>
-      
+
       <div className="max-w-4xl mx-auto">
-         <NotificationsInbox userId={session.userId} />
+        <NotificationsInbox userId={session.userId} />
       </div>
     </div>
   );

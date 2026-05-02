@@ -369,7 +369,7 @@ export default function AdminMaintenancePage() {
   );
 
   return (
-    <div className="flex-1 space-y-6 p-8 pt-6">
+    <div className="flex-1 space-y-6 pl-4 pr-4">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div>
