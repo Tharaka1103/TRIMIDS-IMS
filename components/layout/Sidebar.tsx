@@ -65,6 +65,7 @@ interface SidebarProps {
   userEmail: string;
   unreadCount?: number;
   collapsed?: boolean;
+  onNavClick?: () => void;
 }
 
 const getNavItems = (role: Role, unreadCount: number = 0): NavItem[] => {
@@ -115,35 +116,28 @@ const getNavItems = (role: Role, unreadCount: number = 0): NavItem[] => {
       icon: Bell,
       badge: unreadCount,
     },
-    {
-      title: "Employee Dashboards",
-      href: "#",
-      icon: Users,
-      children: [
-        { title: "Employee Dashboard", href: "/employee", icon: LayoutDashboard },
-        { title: "Employee Tasks", href: "/employee/tasks", icon: ClipboardList },
-        { title: "Employee Leaves", href: "/employee/leaves", icon: Calendar },
-        { title: "Employee Attendance", href: "/employee/attendance", icon: Clock },
-        { title: "Intern Dashboard", href: "/intern", icon: LayoutDashboard },
-        { title: "Intern Tasks", href: "/intern/tasks", icon: ClipboardList },
-        { title: "Intern Attendance", href: "/intern/attendance", icon: Clock },
-        { title: "Intern Documents", href: "/intern/documents", icon: FileText },
-        { title: "Intern Progress", href: "/intern/progress", icon: TrendingUp },
-        { title: "HR Dashboard", href: "/hr", icon: LayoutDashboard },
-        { title: "HR Employees", href: "/hr/employees", icon: Users },
-        { title: "HR Leaves", href: "/hr/leaves", icon: FileText },
-        { title: "HR Assign Tasks", href: "/hr/tasks", icon: FileText },
-        { title: "HR Manage Interns", href: "/hr/interns", icon: FileText },
-        { title: "HR Recruitment", href: "/hr/recruitment", icon: UserCheck },
-        { title: "Finance Dashboard", href: "/finance", icon: LayoutDashboard },
-        { title: "Finance Finances", href: "/finance/finances", icon: DollarSign },
-        { title: "Finance Payroll", href: "/finance/payroll", icon: PieChart },
-        { title: "Finance Reports", href: "/finance/reports", icon: BarChart3 },
-        { title: "Marketing Dashboard", href: "/marketing", icon: LayoutDashboard },
-        { title: "Marketing Campaigns", href: "/marketing/campaigns", icon: Target },
-        { title: "Marketing Analytics", href: "/marketing/analytics", icon: BarChart3 },
-      ],
-    },
+    { title: "Employee Dashboard", href: "/employee", icon: LayoutDashboard },
+    { title: "Employee Tasks", href: "/employee/tasks", icon: ClipboardList },
+    { title: "Employee Leaves", href: "/employee/leaves", icon: Calendar },
+    { title: "Employee Attendance", href: "/employee/attendance", icon: Clock },
+    { title: "Intern Dashboard", href: "/intern", icon: LayoutDashboard },
+    { title: "Intern Tasks", href: "/intern/tasks", icon: ClipboardList },
+    { title: "Intern Attendance", href: "/intern/attendance", icon: Clock },
+    { title: "Intern Documents", href: "/intern/documents", icon: FileText },
+    { title: "Intern Progress", href: "/intern/progress", icon: TrendingUp },
+    { title: "HR Dashboard", href: "/hr", icon: LayoutDashboard },
+    { title: "HR Employees", href: "/hr/employees", icon: Users },
+    { title: "HR Leaves", href: "/hr/leaves", icon: FileText },
+    { title: "HR Assign Tasks", href: "/hr/tasks", icon: FileText },
+    { title: "HR Manage Interns", href: "/hr/interns", icon: FileText },
+    { title: "HR Recruitment", href: "/hr/recruitment", icon: UserCheck },
+    { title: "Finance Dashboard", href: "/finance", icon: LayoutDashboard },
+    { title: "Finance Finances", href: "/finance/finances", icon: DollarSign },
+    { title: "Finance Payroll", href: "/finance/payroll", icon: PieChart },
+    { title: "Finance Reports", href: "/finance/reports", icon: BarChart3 },
+    { title: "Marketing Dashboard", href: "/marketing", icon: LayoutDashboard },
+    { title: "Marketing Campaigns", href: "/marketing/campaigns", icon: Target },
+    { title: "Marketing Analytics", href: "/marketing/analytics", icon: BarChart3 },
     {
       title: "Settings",
       href: "/admin/settings",
@@ -241,6 +235,7 @@ export function Sidebar({
   userEmail,
   unreadCount = 0,
   collapsed = false,
+  onNavClick,
 }: SidebarProps) {
   const pathname = usePathname();
   const router = useRouter();
@@ -323,21 +318,21 @@ export function Sidebar({
                     <Button
                       variant="ghost"
                       className={cn(
-                        "w-full justify-start gap-3 h-10 px-3 font-normal",
+                        "w-full justify-start gap-3 h-11 px-3 font-normal",
                         hasActiveChild &&
                         "bg-accent text-accent-foreground font-medium"
                       )}
                     >
-                      <item.icon className="w-4 h-4 shrink-0" />
+                      <item.icon className="w-5 h-5 shrink-0" />
                       {!collapsed && (
                         <>
-                          <span className="flex-1 text-left text-sm">
+                          <span className="flex-1 text-left text-[15px]">
                             {item.title}
                           </span>
                           {isOpen || hasActiveChild ? (
-                            <ChevronDown className="w-3 h-3 text-muted-foreground" />
+                            <ChevronDown className="w-4 h-4 text-muted-foreground" />
                           ) : (
-                            <ChevronRight className="w-3 h-3 text-muted-foreground" />
+                            <ChevronRight className="w-4 h-4 text-muted-foreground" />
                           )}
                         </>
                       )}
@@ -345,16 +340,16 @@ export function Sidebar({
                   </CollapsibleTrigger>
                   <CollapsibleContent className="ml-4 mt-1 space-y-1 border-l border-border pl-3">
                     {item.children.map((child) => (
-                      <Link key={child.href} href={child.href}>
+                      <Link key={child.href} href={child.href} onClick={onNavClick}>
                         <Button
                           variant="ghost"
                           className={cn(
-                            "w-full justify-start gap-3 h-9 px-3 font-normal text-sm",
+                            "w-full justify-start gap-3 h-10 px-3 font-normal text-[15px]",
                             isActive(child.href) &&
                             "bg-primary/10 text-primary font-medium"
                           )}
                         >
-                          <child.icon className="w-3.5 h-3.5 shrink-0" />
+                          <child.icon className="w-4 h-4 shrink-0" />
                           {!collapsed && <span>{child.title}</span>}
                         </Button>
                       </Link>
@@ -365,23 +360,23 @@ export function Sidebar({
             }
 
             return (
-              <Link key={item.href} href={item.href}>
+              <Link key={item.href} href={item.href} onClick={onNavClick}>
                 <Button
                   variant="ghost"
                   className={cn(
-                    "w-full justify-start gap-3 h-10 px-3 font-normal relative",
+                    "w-full justify-start gap-3 h-11 px-3 font-normal relative",
                     isActive(item.href) &&
                     "bg-primary/10 text-primary font-medium hover:bg-primary/15"
                   )}
                 >
-                  <item.icon className="w-4 h-4 shrink-0" />
+                  <item.icon className="w-5 h-5 shrink-0" />
                   {!collapsed && (
-                    <span className="flex-1 text-left text-sm">
+                    <span className="flex-1 text-left text-[15px]">
                       {item.title}
                     </span>
                   )}
                   {!collapsed && item.badge && item.badge > 0 ? (
-                    <span className="ml-auto bg-primary text-primary-foreground text-xs rounded-full px-1.5 py-0.5 min-w-[18px] text-center leading-none">
+                    <span className="ml-auto bg-primary text-primary-foreground text-xs rounded-full px-2 py-0.5 min-w-[20px] text-center leading-none font-medium">
                       {item.badge > 99 ? "99+" : item.badge}
                     </span>
                   ) : null}
@@ -412,12 +407,12 @@ export function Sidebar({
           )}
         </div>
         <Button
-          variant="ghost"
-          className="w-full justify-start gap-3 h-10 px-3 mt-1 text-destructive hover:text-destructive hover:bg-destructive/10"
+          variant="outline"
+          className="w-full justify-start gap-3 h-11 px-3 mt-1  bg-red-700/80 text-white hover:bg-red-950/80 hover:text-white transition-all duration-200 font-medium"
           onClick={handleLogout}
         >
-          <LogOut className="w-4 h-4 shrink-0" />
-          {!collapsed && <span className="text-sm">Logout</span>}
+          <LogOut className="w-5 h-5 shrink-0" />
+          {!collapsed && <span className="text-[15px]">Logout</span>}
         </Button>
       </div>
     </div>

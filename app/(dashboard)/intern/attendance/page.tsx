@@ -64,7 +64,7 @@ export default function InternAttendancePage() {
   ) as any;
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 pl-4 pr-4">
       <div className="flex items-center justify-between mb-4">
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Attendance Logs</h2>
@@ -84,8 +84,8 @@ export default function InternAttendancePage() {
               <span className="text-sm font-medium text-slate-500 uppercase tracking-widest">{format(new Date(), 'EEEE, MMMM do')}</span>
             </div>
             <div className="space-y-2">
-              <Button 
-                className="w-full justify-start" 
+              <Button
+                className="w-full justify-start border border-black"
                 variant="outline"
                 onClick={handleCheckin}
                 disabled={!!todaysRecord?.checkIn}
@@ -93,7 +93,7 @@ export default function InternAttendancePage() {
                 <LogIn className="mr-2 h-4 w-4" /> Clock In
               </Button>
               <Button
-                className="w-full justify-start"
+                className="w-full justify-start border border-red-800/80"
                 variant="destructive"
                 onClick={handleCheckout}
                 disabled={!todaysRecord?.checkIn || todaysRecord?.checkOut}
@@ -139,7 +139,7 @@ export default function InternAttendancePage() {
                     <TableCell>
                       <Badge variant={
                         record.status === "Present" ? "default" :
-                        record.status === "Half Day" ? "secondary" : "destructive"
+                          record.status === "Half Day" ? "secondary" : "destructive"
                       } className={record.status === "Present" ? "bg-emerald-500" : ""}>
                         {record.status}
                       </Badge>

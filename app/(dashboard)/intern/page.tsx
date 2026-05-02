@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { ClipboardList, Clock, FileText, TrendingUp, CheckCircle2, AlertCircle } from "lucide-react";
+import { Calendar } from "@/components/ui/calendar";
+import { ClipboardList, Clock, FileText, TrendingUp, CheckCircle2, AlertCircle, ListTodo } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -14,6 +15,7 @@ export default function InternDashboardPage() {
   const [tasks, setTasks] = useState([]);
   const [attendance, setAttendance] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [date, setDate] = useState<Date | undefined>(new Date());
 
   useEffect(() => {
     Promise.all([
@@ -39,15 +41,15 @@ export default function InternDashboardPage() {
   }, 0);
 
   return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
+    <div className="flex-1 space-y-4 p-4 md:p-8 pt-6">
       <div className="flex items-center justify-between">
         <div>
-          <h2 className="text-3xl font-bold tracking-tight">Internship Portal</h2>
-          <p className="text-muted-foreground">Track your progress, view assignments, and log attendance.</p>
+          <h2 className="text-2xl md:text-3xl font-bold tracking-tight">Internship Portal</h2>
+          <p className="text-sm md:text-base text-muted-foreground">Track your progress, view assignments, and log attendance.</p>
         </div>
       </div>
 
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
              <CardTitle className="text-sm font-medium">Pending Tasks</CardTitle>
@@ -90,43 +92,71 @@ export default function InternDashboardPage() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between bg-muted/40 pb-4">
-            <div>
-              <CardTitle>My Tasks</CardTitle>
-              <CardDescription>Your recently assigned work</CardDescription>
-            </div>
-            <Link href="/intern/tasks">
-              <Button variant="outline" size="sm">View All</Button>
-            </Link>
-          </CardHeader>
-          <CardContent className="pt-4">
-            {loading ? (
-              <div className="flex justify-center p-4"><Spinner /></div>
-            ) : pendingTasks.length > 0 ? (
-              <div className="space-y-4">
-                {pendingTasks.slice(0, 4).map((task: any) => (
-                  <div key={task._id} className="flex items-start justify-between border-b pb-3 last:border-0 last:pb-0">
-                    <div>
-                      <p className="text-sm font-medium leading-none mb-1">{task.title}</p>
-                      <p className="text-xs text-muted-foreground line-clamp-1">{task.description}</p>
-                    </div>
-                    <Badge variant="secondary" className="ml-2 whitespace-nowrap">{task.status}</Badge>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              <div className="flex flex-col items-center justify-center p-6 text-center text-muted-foreground">
-                <CheckCircle2 className="h-8 w-8 text-emerald-500 mb-2" />
-                <p className="text-sm font-medium text-foreground">You're all caught up!</p>
-                <p className="text-xs">No pending tasks found.</p>
-              </div>
-            )}
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 md:grid-cols-12 gap-4 mt-4">
+         <Card className="md:col-span-4 flex flex-col items-center">
+            <CardHeader className="w-full pb-2">
+               <CardTitle>Calendar & Due Dates</CardTitle>
+            </CardHeader>
+            <CardContent className="flex justify-center w-full">
+               <Calendar
+                 mode="single"
+                 selected={date}
+                 onSelect={setDate}
+                 className="rounded-md border shadow-sm w-full"
+                 modifiers={{
+                    hasTask: tasks.map((t: any) => t.dueDate ? new Date(t.dueDate) : null).filter(Boolean) as Date[]
+                 }}
+                 modifiersStyles={{
+                    hasTask: { fontWeight: 'bold', textDecoration: 'underline', color: 'var(--primary)' }
+                 }}
+               />
+            </CardContent>
+         </Card>
 
-        <Card>
+         <Card className="md:col-span-4">
+           <CardHeader>
+             <CardTitle className="flex items-center gap-2">
+               <ListTodo className="w-5 h-5 text-primary" />
+               Tasks for {date ? format(date, "MMM d") : "Selected Date"}
+             </CardTitle>
+           </CardHeader>
+           <CardContent className="pt-4">
+             {loading ? (
+               <div className="flex justify-center p-4"><Spinner /></div>
+             ) : (
+               <div className="space-y-4">
+                 {tasks
+                   .filter((t: any) => {
+                      if (!date || !t.dueDate) return false;
+                      const taskDate = new Date(t.dueDate);
+                      return taskDate.getDate() === date.getDate() && taskDate.getMonth() === date.getMonth() && taskDate.getFullYear() === date.getFullYear();
+                   })
+                   .map((task: any) => (
+                   <div key={task._id} className="flex items-start justify-between border-b pb-3 last:border-0 last:pb-0">
+                     <div>
+                       <p className="text-sm font-medium leading-none mb-1">{task.title}</p>
+                       <p className="text-[10px] text-muted-foreground">{task.dueDate ? format(new Date(task.dueDate), "MMM d") : "No due date"}</p>
+                     </div>
+                     <Badge variant="secondary" className="ml-2 whitespace-nowrap text-[10px]">{task.status}</Badge>
+                   </div>
+                 ))}
+                 {tasks.filter((t: any) => {
+                      if (!date || !t.dueDate) return false;
+                      const taskDate = new Date(t.dueDate);
+                      return taskDate.getDate() === date.getDate() && taskDate.getMonth() === date.getMonth() && taskDate.getFullYear() === date.getFullYear();
+                   }).length === 0 && (
+                     <div className="flex flex-col items-center justify-center p-6 text-center text-muted-foreground">
+                       <CheckCircle2 className="h-8 w-8 text-emerald-500 mb-2" />
+                       <p className="text-sm font-medium text-foreground">You're all caught up!</p>
+                       <p className="text-xs">No pending tasks for this date.</p>
+                     </div>
+                   )}
+               </div>
+             )}
+           </CardContent>
+         </Card>
+
+        <Card className="md:col-span-4">
           <CardHeader className="bg-muted/40 pb-4">
             <CardTitle>Important Milestones</CardTitle>
             <CardDescription>Your internship timeline</CardDescription>

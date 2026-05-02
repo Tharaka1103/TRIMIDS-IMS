@@ -30,9 +30,12 @@ export default function InternDocumentsPage() {
     toast.info("Downloading document...");
   };
 
-  return (
-    <div className="flex-1 space-y-4 p-8 pt-6">
-      <div className="flex items-center justify-between space-y-2">
+  return <>
+    <div className="w-full items-center jsutify-center text-center font-bold text-2xl pt-10">Coming soon...</div>
+
+    {/*<div className="flex-1 space-y-4 p-8 pt-6">
+      Comming Soon
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Documents</h2>
         <div className="flex items-center space-x-2">
           <Button>
@@ -110,6 +113,6 @@ export default function InternDocumentsPage() {
           </Table>
         </CardContent>
       </Card>
-    </div>
-  );
+    </div>*/}
+  </>
 }
